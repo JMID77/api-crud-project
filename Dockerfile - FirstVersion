@@ -1,0 +1,14 @@
+# Utiliser l'image officielle de OpenJDK 17 comme image de base
+FROM openjdk:17-jdk-slim
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier le fichier JAR construit dans le répertoire de travail
+COPY target/myapp.jar app.jar
+
+# Exposer le port sur lequel l'application Spring Boot sera accessible
+EXPOSE 8080
+
+# Commande pour démarrer l'application
+ENTRYPOINT ["java", "-jar", "app.jar"]

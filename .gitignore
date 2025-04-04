@@ -1,0 +1,43 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+
+### Fichiers de build ###
+# Maven
+target/            # Répertoire des fichiers compilés par Maven
+
+
+### VS Code ###
+.vscode/            # Répertoire des configurations de VSCode (par exemple, paramètres de l'éditeur, extensions)
+*.code-workspace
+
+
+### Environment ###
+.env
+.env.local
+.env.*.local
+
+
+### Fichiers générés automatiquement ###
+# Logs
+.env               # Fichiers de variables d'environnement locaux
+# Dossiers temporaires
+tmp/
+temp/
+
+
+### Fichiers système ###
+# Windows
+Thumbs.db          # Fichiers de vignettes générés par Windows
+Desktop.ini        # Fichier de configuration des répertoires Windows
+*.cab              # Fichiers compressés utilisés par Windows
+
+
+### Fichiers de configuration Java
+*.class            # Fichiers de classes compilées Java
+*.jar              # Fichiers JAR générés
+*.war              # Fichiers WAR générés
+*.ear              # Fichiers EAR générés

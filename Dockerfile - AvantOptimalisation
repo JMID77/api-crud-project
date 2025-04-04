@@ -1,0 +1,63 @@
+# Étape 1 : Construction de l'application avec Maven
+FROM maven:3.8.4-openjdk-17-slim AS build
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier le fichier pom.xml et télécharger les dépendances (cela permet de ne pas re-télécharger les dépendances à chaque build)
+COPY pom.xml .
+
+# Télécharger les dépendances
+RUN mvn dependency:go-offline
+
+# Copier le code source
+COPY src /app/src
+
+# Compiler l'application et générer le fichier JAR
+RUN mvn clean package -DskipTests
+
+# Lister les fichiers dans le répertoire target pour vérifier la présence du JAR
+RUN ls -l /app/target
+
+# Étape 2 : Image finale qui contient uniquement le JAR compilé
+FROM openjdk:17-jdk-slim
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier le fichier JAR généré depuis l'étape de build
+COPY --from=build /app/target/apiCrudProject.1.02.jar /app/apiCrudProject.1.02.jar
+
+# Exposer le port sur lequel l'application va tourner
+EXPOSE 8080
+
+# Commande pour démarrer l'application Java
+CMD ["java", "-jar", "apiCrudProject.1.02.jar"]
+
+
+# Instruction de construction de l'image Docker
+# Docker compose
+# > docker-compose up --build -d
+# Docker Builder
+# > docker build -t spring_app .
+# Docker Run
+# > docker run -p 8080:8080 --name apicrudproject-app spring_app
+# > docker run -e SPRING_PROFILES_ACTIVE=prod -p 8080:8080 myapp
+
+# Si conflit sur Docker
+# Docker détecter container actif
+# > docker ps
+# Docker détecter container existant
+# > docker ps -a
+# Arrêter un container actif
+# > docker stop <container_id>
+# Supprimer un container actif
+# > docker rm -f <container_id>
+# Supprimer une image Docker
+# > docker rmi <image_id>
+# Supprimer tous les containers arrêtés
+# > docker image prune
+
+## En PowerShell
+# Arrêter les container actifs
+# > docker ps -q | ForEach-Object { docker stop $_ } 
