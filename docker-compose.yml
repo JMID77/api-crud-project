@@ -26,6 +26,21 @@ services:
           options:
             max-size: "10m"
             max-file: "3"
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PMA_HOST: mysql_db
+      PMA_USER: root
+      PMA_PASSWORD: rootapi
+    ports:
+      - "8081:80"  # accès via http://localhost:8081
+    networks:
+      - my_network
 
   app:
     build: .
