@@ -6,12 +6,13 @@ target/
 
 
 ### Fichiers de build ###
-# Maven
-target/            # Répertoire des fichiers compilés par Maven
+# Maven - Répertoire des fichiers compilés par Maven
+target/
 
 
 ### VS Code ###
-.vscode/            # Répertoire des configurations de VSCode (par exemple, paramètres de l'éditeur, extensions)
+# Répertoire des configurations de VSCode (par exemple, paramètres de l'éditeur, extensions)
+.vscode/
 *.code-workspace
 
 
@@ -22,7 +23,8 @@ target/            # Répertoire des fichiers compilés par Maven
 
 ### Fichiers générés automatiquement ###
 # Logs
-.env               # Fichiers de variables d'environnement locaux
+# Fichiers de variables d'environnement locaux
+.env
 # Dossiers temporaires
 tmp/
 temp/
@@ -30,27 +32,36 @@ temp/
 
 ### Fichiers système ###
 # Windows
-Thumbs.db          # Fichiers de vignettes générés par Windows
-Desktop.ini        # Fichier de configuration des répertoires Windows
-*.cab              # Fichiers compressés utilisés par Windows
+# Fichiers de vignettes générés par Windows
+Thumbs.db
+# Fichier de configuration des répertoires Windows
+Desktop.ini
+# Fichiers compressés utilisés par Windows
+*.cab
 
 
 ### Fichiers de configuration Java
-*.class            # Fichiers de classes compilées Java
-*.jar              # Fichiers JAR générés
-*.war              # Fichiers WAR générés
-*.ear              # Fichiers EAR générés
+# Fichiers de classes compilées Java
+*.class
+# Fichiers JAR générés
+*.jar
+# Fichiers WAR générés
+*.war
+# Fichiers EAR générés
+*.ear
 
 
 ### Fichier de test HTTP
-api-tests/*.*
+api-test/*.*
 
 
 ### Fichiers d'initialisation DB (MySQL)
 mysql-init/*.*
 
 
-### Fichiers de configuration Mave
+### Fichiers de configuration Maven
 .mvn/
 .mvn/wrapper
-.mvn/wrapper/*.*
+.mvn/wrapper/*.* 
+mvnw
+mvnw.cmd
