@@ -48,3 +48,9 @@ api-tests/*.*
 
 ### Fichiers d'initialisation DB (MySQL)
 mysql-init/*.*
+
+
+### Fichiers de configuration Mave
+.mvn/
+.mvn/wrapper
+.mvn/wrapper/*.*
