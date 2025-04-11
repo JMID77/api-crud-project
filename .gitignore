@@ -40,3 +40,11 @@ Desktop.ini        # Fichier de configuration des répertoires Windows
 *.jar              # Fichiers JAR générés
 *.war              # Fichiers WAR générés
 *.ear              # Fichiers EAR générés
+
+
+### Fichier de test HTTP
+api-tests/*.*
+
+
+### Fichiers d'initialisation DB (MySQL)
+mysql-init/*.*
