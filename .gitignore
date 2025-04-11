@@ -17,8 +17,7 @@ target/            # Répertoire des fichiers compilés par Maven
 
 ### Environment ###
 .env
-.env.local
-.env.*.local
+.env.*
 
 
 ### Fichiers générés automatiquement ###

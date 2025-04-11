@@ -1,0 +1,17 @@
+# ------------------------------
+# Étape 1 : Image finale d'exécution
+# ------------------------------
+FROM eclipse-temurin:24-jre-alpine AS build
+
+# Créer un répertoire de travail
+WORKDIR /app
+
+# Copier le JAR qui a été généré localement dans ./target
+COPY ./target/apiCrudProject.1.02.jar /app/apiCrudProject.1.02.jar
+
+# Exposer le port sur lequel l'application va tourner
+EXPOSE 8080
+
+ENTRYPOINT []
+# Commande pour démarrer l'application Java
+CMD ["java", "-Dspring.profiles.active=dev", "-jar", "/app/apiCrudProject.1.02.jar"]

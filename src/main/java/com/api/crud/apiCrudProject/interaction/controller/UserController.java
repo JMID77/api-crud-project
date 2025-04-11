@@ -1,7 +1,10 @@
 package com.api.crud.apiCrudProject.interaction.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +24,9 @@ import jakarta.validation.Valid;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    
+    @Autowired
+    private Environment env;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -28,22 +34,26 @@ public class UserController {
 
     @PostMapping
     public UserResponse createUser(@RequestBody @Valid UserRequest request) {
+        System.out.println("Active profiles (Controller - POST): " + Arrays.toString(this.env.getActiveProfiles()));
         return userService.createUser(request);
     }
 
     @GetMapping("/{id}")
     public UserResponse getUserById(@PathVariable Long id) {
+        System.out.println("Active profiles (Controller - GETID): " + Arrays.toString(this.env.getActiveProfiles()));
         return userService.getUser(id)
                         .orElseThrow(() -> new UserNotFoundException("Utilisateur avec ID " + id + " non trouvé"));
     }
 
     @GetMapping
     public List<UserResponse> getAllUsers() {
+        System.out.println("Active profiles (Controller - GETALL): " + Arrays.toString(this.env.getActiveProfiles()));
         return userService.getAllUsers();
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
+        System.out.println("Active profiles (Controller - DELETEID): " + Arrays.toString(this.env.getActiveProfiles()));
         userService.deleteUser(id);
     }
 }

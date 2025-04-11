@@ -20,7 +20,7 @@ public class SecurityConfig {
                     .ignoringRequestMatchers("/users/**") // Ignorer CSRF pour les routes où tu n'as pas besoin de protection
                 )
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/users/**", "/hello").permitAll() // Autorise les requêtes pour "/users/**"
+                    .requestMatchers("/users/**", "/hello", "/error").permitAll() // Autorise les requêtes pour "/users/**"
                     .anyRequest().authenticated() // Authentifie toute autre requête
                 )
                 .build();

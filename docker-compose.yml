@@ -5,6 +5,7 @@ services:
     container_name: mysql_db
     restart: unless-stopped
     environment:
+      SPRING_PROFILES_ACTIVE: prod
       MYSQL_ROOT_PASSWORD: rootapi
       # Créer la DB par défaut
       MYSQL_DATABASE: MyApiDB
@@ -19,13 +20,17 @@ services:
       interval: 10s
       retries: 5
     volumes:
-      - mysql_data:/var/lib/mysql
+      #- mysql_data:/var/lib/mysql    # Volume persistant pour la DB (Interne au conteneur)
+      - C:\Users\joel.midavaine\Workspaces\Datas\apiCrudProject:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
     command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
     logging:
           driver: "json-file"
           options:
             max-size: "10m"
             max-file: "3"
+    profiles:
+      - prod
 
   phpmyadmin:
     image: phpmyadmin
@@ -35,6 +40,7 @@ services:
       db:
         condition: service_healthy
     environment:
+      SPRING_PROFILES_ACTIVE: prod
       PMA_HOST: mysql_db
       PMA_PORT: 3306
       PMA_USER: root
@@ -43,16 +49,21 @@ services:
       - "8081:80"  # accès via http://localhost:8081
     networks:
       - my_network
+    profiles:
+      - prod
 
   app:
-    build: .
-    container_name: spring_app
+    build: 
+      context: .
+      dockerfile: Dockerfile.prod
+    image: myapp:prod
+    container_name: ${CONTAINER_NAME:-myapp_prod}
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "${APP_PORT:-8080}:8080"
     networks:
       - my_network
     env_file:
@@ -63,11 +74,31 @@ services:
       DB_NAME: MyApiDB
       DB_USER: adapi
       DB_PASSWORD: adapipwd
+    profiles:
+      - prod
+
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: myapp:dev
+    container_name: ${CONTAINER_NAME:-myapp_dev} 
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    networks:
+      - my_network
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    profiles:
+      - dev
 
 networks:
   my_network:
     driver: bridge
     name: apinetwork
 
-volumes:
-  mysql_data:
+#volumes:
+#  mysql_data:

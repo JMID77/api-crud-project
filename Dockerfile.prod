@@ -1,0 +1,35 @@
+# ------------------------------
+# Étape 1 : Build Maven (pour PROD uniquement)
+# ------------------------------
+FROM maven:3.9.9-amazoncorretto-17-alpine AS build
+
+# Créer un répertoire de travail
+WORKDIR /app
+
+# Copier le pom.xml + pré-récupération des dépendances (cache Maven optimisé)
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copier le code source uniquement
+COPY src /app/src
+
+# Compiler le projet
+RUN mvn clean package -DskipTests -Dmaven.compiler.source=17 -Dmaven.compiler.target=17
+
+
+# ------------------------------
+# Étape 2 : Image finale d'exécution
+# ------------------------------
+FROM eclipse-temurin:24-jre-alpine
+
+# Créer un répertoire de travail
+WORKDIR /app
+
+# Récupérer le .jar depuis l'étape build
+COPY --from=build /app/target/apiCrudProject.1.02.jar /app/apiCrudProject.1.02.jar
+
+# Exposer le port sur lequel l'application va tourner
+EXPOSE 8080
+
+# Commande pour démarrer l'application Java
+CMD ["java", "-Dspring.profiles.active=prod", "-jar", "/app/apiCrudProject.1.02.jar"]
