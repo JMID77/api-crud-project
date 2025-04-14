@@ -1,4 +1,4 @@
-package com.api.crud.apiCrudProject.interaction.controller;
+package com.api.crud.apiCrudProject.interaction.controller.users;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.crud.apiCrudProject.application.dto.UserRequest;
-import com.api.crud.apiCrudProject.application.dto.UserResponse;
-import com.api.crud.apiCrudProject.application.service.UserService;
-import com.api.crud.apiCrudProject.infrastructure.exception.UserNotFoundException;
+import com.api.crud.apiCrudProject.application.dto.users.UserRequest;
+import com.api.crud.apiCrudProject.application.dto.users.UserResponse;
+import com.api.crud.apiCrudProject.application.service.users.UserService;
+import com.api.crud.apiCrudProject.infrastructure.exception.users.UserNotFoundException;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
     private final UserService userService;
     
@@ -42,7 +42,7 @@ public class UserController {
     public UserResponse getUserById(@PathVariable Long id) {
         System.out.println("Active profiles (Controller - GETID): " + Arrays.toString(this.env.getActiveProfiles()));
         return userService.getUser(id)
-                        .orElseThrow(() -> new UserNotFoundException("Utilisateur avec ID " + id + " non trouvé"));
+                        .orElseThrow(() -> new UserNotFoundException("Utilisateur avec ID " + id + " non trouvé", id));
     }
 
     @GetMapping
@@ -56,4 +56,5 @@ public class UserController {
         System.out.println("Active profiles (Controller - DELETEID): " + Arrays.toString(this.env.getActiveProfiles()));
         userService.deleteUser(id);
     }
+
 }

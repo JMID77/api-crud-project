@@ -17,10 +17,10 @@ public class SecurityConfig {
         return http
                 // CSRF activé pour les API REST (les cookies ne sont pas utilisés ici, donc pas besoin de protection complète)
                 .csrf(csrf -> csrf
-                    .ignoringRequestMatchers("/users/**") // Ignorer CSRF pour les routes où tu n'as pas besoin de protection
+                    .ignoringRequestMatchers("/api/v1/users/**", "/api/v1/actions/**") // Ignorer CSRF pour les routes où tu n'as pas besoin de protection
                 )
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/users/**", "/hello", "/error").permitAll() // Autorise les requêtes pour "/users/**"
+                    .requestMatchers("/api/v1/users/**", "/api/v1/actions/**", "/hello", "/error").permitAll() // Autorise les requêtes pour "/users/**"
                     .anyRequest().authenticated() // Authentifie toute autre requête
                 )
                 .build();

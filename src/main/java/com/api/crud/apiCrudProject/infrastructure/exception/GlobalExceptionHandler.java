@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     // Gérer les erreurs de validation
@@ -24,8 +25,8 @@ public class GlobalExceptionHandler {
     }
 
      // Gérer l'erreur "Utilisateur non trouvé"
-     @ExceptionHandler(UserNotFoundException.class)
-     public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
+     @ExceptionHandler(ResourceNotFoundException.class)
+     public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
      }
 

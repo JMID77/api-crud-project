@@ -1,14 +1,14 @@
-package com.api.crud.apiCrudProject.application.service;
+package com.api.crud.apiCrudProject.application.service.users;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.api.crud.apiCrudProject.application.dto.UserRequest;
-import com.api.crud.apiCrudProject.application.dto.UserResponse;
-import com.api.crud.apiCrudProject.application.mapper.UserMapper;
-import com.api.crud.apiCrudProject.domain.repository.UserRepository;
+import com.api.crud.apiCrudProject.application.dto.users.UserRequest;
+import com.api.crud.apiCrudProject.application.dto.users.UserResponse;
+import com.api.crud.apiCrudProject.application.mapper.users.UserMapper;
+import com.api.crud.apiCrudProject.domain.repository.users.UserRepository;
 
 @Service
 public class UserService {

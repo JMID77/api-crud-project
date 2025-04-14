@@ -1,9 +1,9 @@
-package com.api.crud.apiCrudProject.domain.repository;
+package com.api.crud.apiCrudProject.domain.repository.users;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.api.crud.apiCrudProject.domain.entity.User;
+import com.api.crud.apiCrudProject.domain.entity.users.User;
 
 public interface UserRepository {
     User save(User user);

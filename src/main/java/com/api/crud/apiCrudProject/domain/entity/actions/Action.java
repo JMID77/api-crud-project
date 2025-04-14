@@ -1,6 +1,8 @@
-package com.api.crud.apiCrudProject.domain.entity;
+package com.api.crud.apiCrudProject.domain.entity.actions;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,12 +19,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "users")
-public class User {
+@Table(name = "actions")
+public class Action {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userName;
-    private String email;
-    private String password;
+
+    private String actionName;
+    
+    @Enumerated(EnumType.STRING)
+    private ActionStatus actionStatus;
 }
