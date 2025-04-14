@@ -1,4 +1,4 @@
-package com.api.crud.apiCrudProject.interaction.controller.action;
+package com.api.crud.apiCrudProject.interaction.action;
 
 import java.util.List;
 

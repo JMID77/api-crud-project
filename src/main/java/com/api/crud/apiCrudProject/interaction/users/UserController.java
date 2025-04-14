@@ -1,4 +1,4 @@
-package com.api.crud.apiCrudProject.interaction.controller.users;
+package com.api.crud.apiCrudProject.interaction.users;
 
 import java.util.Arrays;
 import java.util.List;
