@@ -10,4 +10,5 @@ public interface ActionRepository {
     Optional<Action> findById(Long id);
     List<Action> findAll();
     void deleteById(Long id);
+    boolean existsById(Long id);
 }
