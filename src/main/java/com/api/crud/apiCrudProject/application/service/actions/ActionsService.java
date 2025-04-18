@@ -9,6 +9,7 @@ import com.api.crud.apiCrudProject.application.dto.actions.ActionRequest;
 import com.api.crud.apiCrudProject.application.dto.actions.ActionResponse;
 import com.api.crud.apiCrudProject.application.mapper.actions.ActionMapper;
 import com.api.crud.apiCrudProject.domain.entity.actions.Action;
+import com.api.crud.apiCrudProject.domain.entity.actions.ActionStatus;
 import com.api.crud.apiCrudProject.domain.repository.actions.ActionRepository;
 import com.api.crud.apiCrudProject.infrastructure.exception.actions.ActionNotFoundException;
 
@@ -56,6 +57,10 @@ public class ActionsService {
         } else {
             return false;
         }
+    }
+
+    public List<ActionResponse> getActionsByStatus(ActionStatus actionStatus) {
+        return this.actionRepository.findActionStatusByStatus(actionStatus.name()).stream().map(this.actionMapper::toResponse).toList();
     }
 
 }

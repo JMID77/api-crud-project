@@ -89,4 +89,11 @@ public class ActionController {
     public ActionStatus[] getAllStatuses() {
         return ActionStatus.values();
     }
+
+    @GetMapping("/status/{status}")
+    public List<EntityModel<ActionResponse>> getActionsByStatus(@PathVariable ActionStatus status) {
+        return actionService.getActionsByStatus(status).stream()
+                            .map(action -> this.actionModelAssembler.toModel(action, ActionContext.DEFAULT))
+                            .collect(Collectors.toList());
+    }
 }

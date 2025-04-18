@@ -11,4 +11,6 @@ public interface ActionRepository {
     List<Action> findAll();
     void deleteById(Long id);
     boolean existsById(Long id);
+
+    List<Action> findActionStatusByStatus(String actionStatus);
 }
