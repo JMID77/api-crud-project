@@ -20,7 +20,7 @@ public class ActionRequestValidationTest {
 
     @BeforeEach
     public void setUp() {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
+        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
 
@@ -36,7 +36,7 @@ public class ActionRequestValidationTest {
     @Test
     public void whenActionNameIsBlank_thenViolationOccurs() {
         ActionRequest request = createActionRequest("     ", ActionStatus.CREATED);
-        Set<ConstraintViolation<ActionRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<ActionRequest>> violations = this.validator.validate(request);
 
         assertFalse(violations.isEmpty(), "Expected constraint violations, but found none.");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("actionName")), "Expected violation on actionName, but found: " + violations);
@@ -46,7 +46,7 @@ public class ActionRequestValidationTest {
     public void whenActionNameIsTooLong_thenViolationOccurs() {
         String longName = "a".repeat(101); // Assuming the max length is 100 characters
         ActionRequest request = createActionRequest(longName, ActionStatus.CREATED);
-        Set<ConstraintViolation<ActionRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<ActionRequest>> violations = this.validator.validate(request);
 
         assertFalse(violations.isEmpty(), "Expected constraint violations, but found none.");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("actionName")), "Expected violation on actionName, but found: " + violations);
@@ -55,7 +55,7 @@ public class ActionRequestValidationTest {
     @Test
     public void whenActionStatusIsNull_thenViolationOccurs() {
         ActionRequest request = createActionRequest("Faire les courses", null);
-        Set<ConstraintViolation<ActionRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<ActionRequest>> violations = this.validator.validate(request);
 
         assertFalse(violations.isEmpty(), "Expected constraint violations, but found none.");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("actionStatus")), "Expected violation on status, but found: " + violations);
@@ -64,7 +64,7 @@ public class ActionRequestValidationTest {
     @Test
     public void whenActionNameIsNull_thenViolationOccures() {
         ActionRequest request = createActionRequest(null, ActionStatus.CREATED);
-        Set<ConstraintViolation<ActionRequest>> violations = validator.validate(request);
+        Set<ConstraintViolation<ActionRequest>> violations = this.validator.validate(request);
 
         assertFalse(violations.isEmpty(), "Expected constraint violations, but found none.");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("actionName")), "Expected violation on actionName, but found: " + violations);

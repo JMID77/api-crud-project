@@ -5,7 +5,7 @@ package com.api.crud.apiCrudProject.interaction.controller;
  import org.springframework.web.bind.annotation.RestController;
  
  @RestController
- @RequestMapping
+ @RequestMapping("/api/v1")
  public class HelloController {
  
      public HelloController() {

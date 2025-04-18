@@ -1,4 +1,4 @@
-package com.api.crud.apiCrudProject.infrastructure.hateoas.actions;
+package com.api.crud.apiCrudProject.infrastructure.hateoas.action;
 
 public enum ActionContext {
     DEFAULT,       // Utilisé dans les requêtes classiques

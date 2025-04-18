@@ -30,6 +30,12 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -136,6 +142,42 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			 <!-- Plugin Surefire : exécution des tests -->
+			 <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.1.2</version>
+				<configuration>
+				  <!-- Résumé clair dans la console -->
+				  <printSummary>true</printSummary>
+				  <reportFormat>brief</reportFormat>
+		  
+				  <!-- Pas de redirection des logs dans un fichier -->
+				  <redirectTestOutputToFile>false</redirectTestOutputToFile>
+		  
+				  <!-- Stacktraces plus courts -->
+				  <trimStackTrace>true</trimStackTrace>
+		  
+				  <!-- Affiche les résultats directement dans la console -->
+				  <useFile>false</useFile>
+				</configuration>
+			  </plugin>
+		  
+			  <!-- Plugin de rapport HTML -->
+			  <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>3.1.2</version>
+				<executions>
+				  <execution>
+					<phase>verify</phase>
+					<goals>
+					  <goal>report-only</goal>
+					</goals>
+				  </execution>
+				</executions>
+			  </plugin>
 		</plugins>
 	</build>
 

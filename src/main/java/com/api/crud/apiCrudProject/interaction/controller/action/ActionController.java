@@ -17,8 +17,8 @@ import com.api.crud.apiCrudProject.application.dto.actions.ActionRequest;
 import com.api.crud.apiCrudProject.application.service.actions.ActionsService;
 import com.api.crud.apiCrudProject.domain.entity.actions.ActionStatus;
 import com.api.crud.apiCrudProject.infrastructure.exception.actions.ActionNotFoundException;
-import com.api.crud.apiCrudProject.infrastructure.hateoas.actions.ActionContext;
-import com.api.crud.apiCrudProject.infrastructure.hateoas.actions.ActionModelAssembler;
+import com.api.crud.apiCrudProject.infrastructure.hateoas.action.ActionContext;
+import com.api.crud.apiCrudProject.infrastructure.hateoas.action.ActionModelAssembler;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;

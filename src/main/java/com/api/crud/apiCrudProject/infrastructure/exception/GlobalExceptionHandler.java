@@ -31,6 +31,7 @@ public class GlobalExceptionHandler {
      }
 
      // Gérer toute autre exception
+     @ExceptionHandler(Exception.class)
      public ResponseEntity<String> handleGlobalException(Exception ex) {
          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error for : " + ex.getMessage());
      }

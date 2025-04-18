@@ -1,4 +1,4 @@
-package com.api.crud.apiCrudProject.infrastructure.hateoas.actions;
+package com.api.crud.apiCrudProject.infrastructure.hateoas.action;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
