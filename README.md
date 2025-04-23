@@ -92,3 +92,7 @@ mvn spring-boot:run
 Pour plus de détails sur l’architecture, les choix techniques et l’évolution du projet, consulte le wiki associé :
 
 ➡️ [Schéma global du projet – Notion](https://polite-payment-f71.notion.site/Sch-ma-global-du-projet-1d59b8a90bd9807fa706d5d9c579ad33)
+
+Voici pour la mise en place des tests sur mon mini-projet:
+
+➡️ [Mise en place des tests - Notion](https://polite-payment-f71.notion.site/Mise-en-place-des-tests-1d79b8a90bd9801eacf8f0bbd5253685?pvs=4)
