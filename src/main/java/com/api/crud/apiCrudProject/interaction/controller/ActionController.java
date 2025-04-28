@@ -3,6 +3,9 @@ package com.api.crud.apiCrudProject.interaction.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,13 +19,8 @@ import com.api.crud.apiCrudProject.application.dto.ActionRequest;
 import com.api.crud.apiCrudProject.application.dto.ActionResponse;
 import com.api.crud.apiCrudProject.application.service.ActionsService;
 import com.api.crud.apiCrudProject.domain.entity.ActionStatus;
-import com.api.crud.apiCrudProject.infrastructure.exception.ActionNotFoundException;
 import com.api.crud.apiCrudProject.infrastructure.hateoas.ActionContext;
 import com.api.crud.apiCrudProject.infrastructure.hateoas.ActionModelAssembler;
-
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.ResponseEntity;
 
 import jakarta.validation.Valid;
 
@@ -45,9 +43,9 @@ public class ActionController {
         
         return ResponseEntity
                 .created(WebMvcLinkBuilder.linkTo(
-                    WebMvcLinkBuilder.methodOn(ActionController.class).getActionById(createdAction.id())
-                ).toUri())
-                .body(actionModel);
+                            WebMvcLinkBuilder.methodOn(ActionController.class).getActionById(createdAction.id())
+                        ).toUri()
+                    ).body(actionModel);
     }
 
     @PutMapping("/{id}")
@@ -61,28 +59,22 @@ public class ActionController {
 
     @GetMapping("/{id}")
     public EntityModel<ActionResponse> getActionById(@PathVariable Long id) {
-        ActionResponse action = actionService.getAction(id)
-                                    .orElseThrow(() -> new ActionNotFoundException("Action with ID " + id + " not found", id));
-        
-        return this.actionModelAssembler.toModel(action, ActionContext.DEFAULT);
+        return this.actionModelAssembler.toModel(this.actionService.getAction(id), ActionContext.DEFAULT);
     }
 
     @GetMapping
     public List<EntityModel<ActionResponse>> getAllActions() {
-        return actionService.getAllActions().stream()
+        return actionService.getAllActions()
+                            .stream()
                             .map(action -> this.actionModelAssembler.toModel(action, ActionContext.DEFAULT))
                             .collect(Collectors.toList());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteActionById(@PathVariable Long id) {
-        boolean deleted = actionService.deleteActionById(id);
-
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        this.actionService.deleteActionById(id);
+        // Return a 204, if the record doesn't exists, the service throws an exception RessourceNotFound
+        return ResponseEntity.noContent().build();
     }
     
     @GetMapping("/statuses")

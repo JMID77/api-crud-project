@@ -1,7 +1,6 @@
 package com.api.crud.apiCrudProject.application.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,8 @@ import com.api.crud.apiCrudProject.application.dto.UserResponse;
 import com.api.crud.apiCrudProject.application.mapper.UserMapper;
 import com.api.crud.apiCrudProject.domain.entity.User;
 import com.api.crud.apiCrudProject.domain.repository.UserRepository;
-import com.api.crud.apiCrudProject.infrastructure.exception.UserNotFoundException;
+import com.api.crud.apiCrudProject.infrastructure.exception.Entities;
+import com.api.crud.apiCrudProject.infrastructure.exception.RessourceNotFoundException;
 
 @Service
 public class UserService {
@@ -28,33 +28,41 @@ public class UserService {
     }
 
     public UserResponse updateUser(Long id, UserRequest userRequest) {
-        User existingUser = this.userRepository.findById(id).orElse(null);
-        if (existingUser == null || existingUser.getId() != id) {
-            throw new UserNotFoundException("The user "+id+" not the correct user !", id);
+        UserResponse userResponse = null;
+
+        if (checkExistsUser(id)) {
+            User theUser = this.userMapper.toEntity(userRequest);
+
+            theUser.setId(id);
+
+            var user = this.userRepository.save(theUser);
+            userResponse = this.userMapper.toResponse(user);
         }
 
-        User theUser = this.userMapper.toEntity(userRequest);
-
-        theUser.setId(id);
-
-        var user = this.userRepository.save(theUser);
-        return this.userMapper.toResponse(user);
+        return userResponse;
     }
 
-    public Optional<UserResponse> getUser(Long id) {
-        return this.userRepository.findById(id).map(this.userMapper::toResponse);
+    public UserResponse getUser(Long id) {
+        return this.userRepository.findById(id)
+                                    .map(this.userMapper::toResponse)
+                                    .orElseThrow(() -> new RessourceNotFoundException(Entities.USER, id));
     }
 
     public List<UserResponse> getAllUsers() {
         return this.userRepository.findAll().stream().map(this.userMapper::toResponse).toList();
     }
 
-    public boolean deleteUser(Long id) {
-        if (this.userRepository.existsById(id)) {
+    public void deleteUser(Long id) {
+        if (checkExistsUser(id)) {
             this.userRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
         }
     }
+
+    private boolean checkExistsUser(Long id) {
+        User existingUser = this.userRepository.findById(id).orElse(null);
+        if (existingUser == null || existingUser.getId() != id) {
+            throw new RessourceNotFoundException(Entities.USER, id);
+        }
+        return true;
+    } 
 }

@@ -1,7 +1,6 @@
 package com.api.crud.apiCrudProject.application.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,8 @@ import com.api.crud.apiCrudProject.application.mapper.ActionMapper;
 import com.api.crud.apiCrudProject.domain.entity.Action;
 import com.api.crud.apiCrudProject.domain.entity.ActionStatus;
 import com.api.crud.apiCrudProject.domain.repository.ActionRepository;
-import com.api.crud.apiCrudProject.infrastructure.exception.ActionNotFoundException;
+import com.api.crud.apiCrudProject.infrastructure.exception.Entities;
+import com.api.crud.apiCrudProject.infrastructure.exception.RessourceNotFoundException;
 
 @Service
 public class ActionsService {
@@ -30,38 +30,46 @@ public class ActionsService {
     }
     
     public ActionResponse updateAction(Long id, ActionRequest actionRequest) {
-        Action existingAction = this.actionRepository.findById(id).orElse(null);
-        if (existingAction == null || existingAction.getId() != id) {
-            throw new ActionNotFoundException("The action "+id+" not the correct action !", id);
+        ActionResponse actionResponse = null;
+
+        if (checkExistsAction(id)) {
+            Action theAction = this.actionMapper.toEntity(actionRequest);
+
+            theAction.setId(id);
+            
+            var action = this.actionRepository.save(theAction);
+            actionResponse = this.actionMapper.toResponse(action);
         }
 
-        Action theAction = this.actionMapper.toEntity(actionRequest);
-
-        theAction.setId(id);
-        
-        var action = this.actionRepository.save(theAction);
-        return this.actionMapper.toResponse(action);
+        return actionResponse;
     }
 
-    public Optional<ActionResponse> getAction(Long id) {
-        return this.actionRepository.findById(id).map(this.actionMapper::toResponse);
+    public ActionResponse getAction(Long id) {
+        return this.actionRepository.findById(id)
+                                        .map(this.actionMapper::toResponse)
+                                        .orElseThrow(() -> new RessourceNotFoundException(Entities.ACTION, id));
     }
 
     public List<ActionResponse> getAllActions() {
         return this.actionRepository.findAll().stream().map(actionMapper::toResponse).toList();
     }
 
-    public boolean deleteActionById(Long id) {
-        if (this.actionRepository.existsById(id)) {
+    public void deleteActionById(Long id) {
+        if (checkExistsAction(id)) {
             this.actionRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
         }
     }
 
     public List<ActionResponse> getActionsByStatus(ActionStatus actionStatus) {
         return this.actionRepository.findActionStatusByStatus(actionStatus.name()).stream().map(this.actionMapper::toResponse).toList();
     }
+
+    private boolean checkExistsAction(Long id) {
+        Action existingAction = this.actionRepository.findById(id).orElse(null);
+        if (existingAction == null || existingAction.getId() != id) {
+            throw new RessourceNotFoundException(Entities.ACTION, id);
+        }
+        return true;
+    } 
 
 }

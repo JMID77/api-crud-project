@@ -1,7 +1,6 @@
 package com.api.crud.apiCrudProject.application.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,8 @@ import com.api.crud.apiCrudProject.application.dto.UserSystemResponse;
 import com.api.crud.apiCrudProject.application.mapper.UserSystemMapper;
 import com.api.crud.apiCrudProject.domain.entity.UserSystem;
 import com.api.crud.apiCrudProject.domain.repository.UserSystemRepository;
-import com.api.crud.apiCrudProject.infrastructure.exception.UserSystemNotFoundException;
+import com.api.crud.apiCrudProject.infrastructure.exception.Entities;
+import com.api.crud.apiCrudProject.infrastructure.exception.RessourceNotFoundException;
 
 @Service
 public class UserSystemService {
@@ -29,33 +29,42 @@ public class UserSystemService {
     }
 
     public UserSystemResponse updateUserSystem(Long id, UserSystemRequest userSysRequest) {
-        UserSystem existingUserSys = this.userSysRepository.findById(id).orElse(null);
-        if (existingUserSys == null || existingUserSys.getId() != id) {
-            throw new UserSystemNotFoundException("The UserSystem "+id+" not the correct user", id);
+        UserSystemResponse userSysResponse = null;
+
+        if (checkExistsUserSystem(id)) {
+            UserSystem theUserSys = this.userSysMapper.toEntity(userSysRequest);
+
+            theUserSys.setId(id);
+    
+            var user = this.userSysRepository.save(theUserSys);
+            userSysResponse = this.userSysMapper.toResponse(user);
         }
-
-        UserSystem theUserSys = this.userSysMapper.toEntity(userSysRequest);
-
-        theUserSys.setId(id);
-
-        var user = this.userSysRepository.save(theUserSys);
-        return this.userSysMapper.toResponse(user);
+        
+        return userSysResponse;
     }
 
-    public Optional<UserSystemResponse> getUserSystem(Long id) {
-        return this.userSysRepository.findById(id).map(this.userSysMapper::toResponse);
+    public UserSystemResponse getUserSystem(Long id) {
+        return this.userSysRepository.findById(id)
+                                        .map(this.userSysMapper::toResponse)
+                                        .orElseThrow(() -> new RessourceNotFoundException(Entities.USER_SYSTEM, id));
     }
 
     public List<UserSystemResponse> getAllUserSystems() {
         return this.userSysRepository.findAll().stream().map(this.userSysMapper::toResponse).toList();
     }
 
-    public boolean deleteUserSystem(Long id) {
-        if (this.userSysRepository.existsById(id)) {
+    public void deleteUserSystem(Long id) {
+        if (checkExistsUserSystem(id)) {
             this.userSysRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
         }
     }
+
+    
+    private boolean checkExistsUserSystem(Long id) {
+        UserSystem existingUserSys = this.userSysRepository.findById(id).orElse(null);
+        if (existingUserSys == null || existingUserSys.getId() != id) {
+            throw new RessourceNotFoundException(Entities.USER_SYSTEM, id);
+        }
+        return true;
+    } 
 }
