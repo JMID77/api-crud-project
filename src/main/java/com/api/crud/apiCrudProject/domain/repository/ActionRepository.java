@@ -1,0 +1,16 @@
+package com.api.crud.apiCrudProject.domain.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.api.crud.apiCrudProject.domain.entity.Action;
+
+public interface ActionRepository {
+    Action save(Action action);
+    Optional<Action> findById(Long id);
+    List<Action> findAll();
+    void deleteById(Long id);
+    boolean existsById(Long id);
+
+    List<Action> findActionStatusByStatus(String actionStatus);
+}

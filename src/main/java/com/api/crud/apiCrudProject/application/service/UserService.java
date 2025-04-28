@@ -1,0 +1,60 @@
+package com.api.crud.apiCrudProject.application.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.api.crud.apiCrudProject.application.dto.UserRequest;
+import com.api.crud.apiCrudProject.application.dto.UserResponse;
+import com.api.crud.apiCrudProject.application.mapper.UserMapper;
+import com.api.crud.apiCrudProject.domain.entity.User;
+import com.api.crud.apiCrudProject.domain.repository.UserRepository;
+import com.api.crud.apiCrudProject.infrastructure.exception.UserNotFoundException;
+
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
+
+    public UserResponse createUser(UserRequest userRequest) {
+        var user = this.userRepository.save(this.userMapper.toEntity(userRequest));
+        return this.userMapper.toResponse(user);
+    }
+
+    public UserResponse updateUser(Long id, UserRequest userRequest) {
+        User existingUser = this.userRepository.findById(id).orElse(null);
+        if (existingUser == null || existingUser.getId() != id) {
+            throw new UserNotFoundException("The user "+id+" not the correct user !", id);
+        }
+
+        User theUser = this.userMapper.toEntity(userRequest);
+
+        theUser.setId(id);
+
+        var user = this.userRepository.save(theUser);
+        return this.userMapper.toResponse(user);
+    }
+
+    public Optional<UserResponse> getUser(Long id) {
+        return this.userRepository.findById(id).map(this.userMapper::toResponse);
+    }
+
+    public List<UserResponse> getAllUsers() {
+        return this.userRepository.findAll().stream().map(this.userMapper::toResponse).toList();
+    }
+
+    public boolean deleteUser(Long id) {
+        if (this.userRepository.existsById(id)) {
+            this.userRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
