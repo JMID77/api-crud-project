@@ -1,12 +1,10 @@
-package com.api.crud.apiCrudProject.infrastructure.configuration;
+package com.api.crud.apiCrudProject.infrastructure.security;
 
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
-
-import com.api.crud.apiCrudProject.infrastructure.security.UserSystemTechnicalService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.lang.NonNull;
