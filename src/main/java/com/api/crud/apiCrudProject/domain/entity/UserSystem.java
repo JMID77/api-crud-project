@@ -1,7 +1,10 @@
 package com.api.crud.apiCrudProject.domain.entity;
 
 
+import com.api.crud.apiCrudProject.domain.entity.converter.LanguageConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,7 +38,8 @@ public class UserSystem {
     @Column(nullable = false)
     private Language language;
 
-    @Enumerated(EnumType.STRING)
+    // @Enumerated(EnumType.STRING)
+    @Convert(converter = LanguageConverter.class)
     @Column(nullable = false)
     private RoleType role;
 }

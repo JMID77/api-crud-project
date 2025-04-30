@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.crud.apiCrudProject.application.dto.UserSystemRequest;
 import com.api.crud.apiCrudProject.application.dto.UserSystemResponse;
 import com.api.crud.apiCrudProject.application.service.UserSystemService;
-import com.api.crud.apiCrudProject.infrastructure.security.CurrentUserService;
+import com.api.crud.apiCrudProject.domain.entity.UserSystem;
+import com.api.crud.apiCrudProject.infrastructure.security.UserSystemTechnicalService;
 
 import jakarta.validation.Valid;
 
@@ -27,9 +28,9 @@ import jakarta.validation.Valid;
 public class UserSystemController {
     
     private final UserSystemService userSystemService;
-    private final CurrentUserService currentUserService;
+    private final UserSystemTechnicalService currentUserService;
 
-    public UserSystemController(UserSystemService userSystemService, CurrentUserService currentUserService) {
+    public UserSystemController(UserSystemService userSystemService, UserSystemTechnicalService currentUserService) {
         this.userSystemService = userSystemService;
         this.currentUserService = currentUserService;
     }
@@ -37,8 +38,8 @@ public class UserSystemController {
     @GetMapping("/admins/check")
     public String admin() {
         // Récupérer l'utilisateur authentifié
-        UserDetails userDetails = this.currentUserService.getCurrentUser();
-        return "Hello Administrator ["+userDetails.getUsername()+"] !";
+        UserSystem user = this.currentUserService.getCurrentUser();
+        return "Hello Administrator ["+user.getUsername()+"] !";
     }
 
     @GetMapping("/users/check")

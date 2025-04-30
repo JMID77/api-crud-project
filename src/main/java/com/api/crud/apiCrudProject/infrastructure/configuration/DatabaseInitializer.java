@@ -1,4 +1,4 @@
-package com.api.crud.apiCrudProject.infrastructure.config;
+package com.api.crud.apiCrudProject.infrastructure.configuration;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
