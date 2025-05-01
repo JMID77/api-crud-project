@@ -126,12 +126,12 @@ class ActionsServiceTest {
         List<Action> entities = List.of(entity);
         List<ActionResponse> responses = List.of(response);
 
-        when(this.actionRepository.findAll()).thenReturn(entities);
+        when(this.actionRepository.retrieveAll()).thenReturn(entities);
         when(this.actionMapper.toResponse(entity)).thenReturn(response);
 
         List<ActionResponse> result = this.actionsService.getAllActions();
 
-        verify(this.actionRepository).findAll();
+        verify(this.actionRepository).retrieveAll();
         assertEquals(responses, result);
     }
 

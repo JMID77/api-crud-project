@@ -30,7 +30,7 @@ public class JpaUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> retrieveAll() {
         return userRepository.findAll();
     }
 

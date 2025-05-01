@@ -27,6 +27,7 @@ import lombok.Setter;
 @Builder
 public class UserSystem {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @Column(nullable = false, unique = true, length = 50)
@@ -34,12 +35,12 @@ public class UserSystem {
     @Column(nullable = false, length = 30)
     private String password;
 
-    @Enumerated(EnumType.STRING)
+    // @Enumerated(EnumType.STRING)
+    @Convert(converter = LanguageConverter.class)
     @Column(nullable = false)
     private Language language;
 
-    // @Enumerated(EnumType.STRING)
-    @Convert(converter = LanguageConverter.class)
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoleType role;
 }

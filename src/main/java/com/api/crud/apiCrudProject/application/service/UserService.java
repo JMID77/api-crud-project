@@ -49,7 +49,7 @@ public class UserService {
     }
 
     public List<UserResponse> getAllUsers() {
-        return this.userRepository.findAll().stream().map(this.userMapper::toResponse).toList();
+        return this.userRepository.retrieveAll().stream().map(this.userMapper::toResponse).toList();
     }
 
     public void deleteUser(Long id) {

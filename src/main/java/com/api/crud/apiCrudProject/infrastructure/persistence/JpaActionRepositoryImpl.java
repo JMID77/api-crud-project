@@ -34,7 +34,7 @@ public class JpaActionRepositoryImpl implements ActionRepository {
     }
 
     @Override
-    public List<Action> findAll() {
+    public List<Action> retrieveAll() {
         return actionRepository.findAll();
 
 
@@ -54,7 +54,7 @@ public class JpaActionRepositoryImpl implements ActionRepository {
     }
 
     @Override
-    public List<Action> findActionStatusByStatus(String actionStatut) {
+    public List<Action> searchActionStatusByStatus(String actionStatut) {
         return this.actionRepository.findActionStatusByStatus(actionStatut);
     }
 }

@@ -23,7 +23,7 @@ public class UserSystemTechnicalService {
 
         String userName = authentication.getName();
 
-        return this.userSysRepository.findByUsername(userName)
+        return this.userSysRepository.searchByUsername(userName)
                                             .orElse(null);
     }
 

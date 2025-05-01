@@ -51,7 +51,7 @@ public class ActionsService {
     }
 
     public List<ActionResponse> getAllActions() {
-        return this.actionRepository.findAll().stream().map(actionMapper::toResponse).toList();
+        return this.actionRepository.retrieveAll().stream().map(actionMapper::toResponse).toList();
     }
 
     public void deleteActionById(Long id) {
@@ -61,7 +61,7 @@ public class ActionsService {
     }
 
     public List<ActionResponse> getActionsByStatus(ActionStatus actionStatus) {
-        return this.actionRepository.findActionStatusByStatus(actionStatus.name()).stream().map(this.actionMapper::toResponse).toList();
+        return this.actionRepository.searchActionStatusByStatus(actionStatus.name()).stream().map(this.actionMapper::toResponse).toList();
     }
 
     private boolean checkExistsAction(Long id) {

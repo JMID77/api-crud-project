@@ -6,8 +6,8 @@ import com.api.crud.apiCrudProject.domain.entity.Sandbox;
 
 public interface SandboxRepository {
     Sandbox save(Sandbox sandbox);
-    List<Sandbox> findAll();
+    List<Sandbox> retrieveAll();
     void deleteAll();
     
-    List<Sandbox> findByName(String name);
+    List<Sandbox> searchByName(String name);
 }

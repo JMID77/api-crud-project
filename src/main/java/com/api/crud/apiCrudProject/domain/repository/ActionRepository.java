@@ -8,9 +8,9 @@ import com.api.crud.apiCrudProject.domain.entity.Action;
 public interface ActionRepository {
     Action save(Action action);
     Optional<Action> findById(Long id);
-    List<Action> findAll();
+    List<Action> retrieveAll();
     void deleteById(Long id);
     boolean existsById(Long id);
 
-    List<Action> findActionStatusByStatus(String actionStatus);
+    List<Action> searchActionStatusByStatus(String actionStatus);
 }

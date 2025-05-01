@@ -24,7 +24,7 @@ public class JpaSandBoxRepositoryImpl implements SandboxRepository{
     }
 
     @Override
-    public List<Sandbox> findAll() {
+    public List<Sandbox> retrieveAll() {
         return this.jpaSandbox.findAll();
     }
 
@@ -34,7 +34,7 @@ public class JpaSandBoxRepositoryImpl implements SandboxRepository{
     }
 
     @Override
-    public List<Sandbox> findByName(String name) {
+    public List<Sandbox> searchByName(String name) {
         return this.jpaSandbox.findByName(name);
     }
 }

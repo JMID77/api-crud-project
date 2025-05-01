@@ -50,7 +50,7 @@ public class UserSystemService {
     }
 
     public List<UserSystemResponse> getAllUserSystems() {
-        return this.userSysRepository.findAll().stream().map(this.userSysMapper::toResponse).toList();
+        return this.userSysRepository.retrieveAll().stream().map(this.userSysMapper::toResponse).toList();
     }
 
     public void deleteUserSystem(Long id) {

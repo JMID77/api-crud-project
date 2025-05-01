@@ -8,7 +8,7 @@ import com.api.crud.apiCrudProject.domain.entity.User;
 public interface UserRepository {
     User save(User user);
     Optional<User> findById(Long id);
-    List<User> findAll();
+    List<User> retrieveAll();
     void deleteById(Long id);
     boolean existsById(Long id);
     

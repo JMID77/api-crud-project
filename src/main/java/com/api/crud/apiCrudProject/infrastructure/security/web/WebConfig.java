@@ -1,4 +1,4 @@
-package com.api.crud.apiCrudProject.infrastructure.security;
+package com.api.crud.apiCrudProject.infrastructure.security.web;
 
 import java.nio.charset.StandardCharsets;
 
@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.api.crud.apiCrudProject.infrastructure.security.UserLocaleResolver;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {

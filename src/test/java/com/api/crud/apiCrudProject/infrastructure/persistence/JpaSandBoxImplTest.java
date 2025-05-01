@@ -48,7 +48,7 @@ public class JpaSandBoxImplTest {
         sandboxRepository.save(sandbox2);
 
         // When
-        List<Sandbox> sandboxes = sandboxRepository.findAll();
+        List<Sandbox> sandboxes = sandboxRepository.retrieveAll();
 
         // Then
         assertNotNull(sandboxes);
@@ -66,7 +66,7 @@ public class JpaSandBoxImplTest {
         sandboxRepository.save(sandbox2);
 
         // When
-        List<Sandbox> sandboxes = sandboxRepository.findByName("Sandbox 2");
+        List<Sandbox> sandboxes = sandboxRepository.searchByName("Sandbox 2");
 
         // Then
         assertNotNull(sandboxes);

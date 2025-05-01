@@ -33,7 +33,7 @@ public class JpaUserSystemRepositoryImpl implements UserSystemRepository {
     }
 
     @Override
-    public List<UserSystem> findAll() {
+    public List<UserSystem> retrieveAll() {
         return this.userSysRepository.findAll();
     }
 
@@ -48,9 +48,7 @@ public class JpaUserSystemRepositoryImpl implements UserSystemRepository {
     }
 
     @Override
-    public Optional<UserSystem> findByUsername(String username) {
-        return this.userSysRepository.findByUsername(username)
-                                .stream()
-                                .findFirst();
+    public Optional<UserSystem> searchByUsername(String username) {
+        return this.userSysRepository.findByUsername(username);
     }
 }
