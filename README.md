@@ -94,7 +94,7 @@ Pour plus de détails sur l’architecture, les choix techniques et l’évoluti
 ➡️ [Schéma global du projet – Notion](https://polite-payment-f71.notion.site/Sch-ma-global-du-projet-1d59b8a90bd9807fa706d5d9c579ad33?pvs=4)
 Pour plus de détails sur l’architecture, les choix techniques et l’évolution du projet, consulte le wiki associé :
 
-➡️ [Gestion de la sécurité et internationalisation – Notion]([https://polite-payment-f71.notion.site/Sch-ma-global-du-projet-1d59b8a90bd9807fa706d5d9c579ad33?pvs=4](https://polite-payment-f71.notion.site/S-curit-1e69b8a90bd980dca9f4ec80c7300c74?pvs=4))
+➡️ [Gestion de la sécurité et internationalisation – Notion](https://polite-payment-f71.notion.site/S-curit-1e69b8a90bd980dca9f4ec80c7300c74?pvs=4)
 
 Voici pour la mise en place des tests sur mon mini-projet:
 
