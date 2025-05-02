@@ -1,6 +1,6 @@
 package com.api.crud.apiCrudProject.application.dto;
 
-import com.api.crud.apiCrudProject.domain.entity.ActionStatus;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.ActionStatus;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

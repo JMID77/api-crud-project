@@ -7,7 +7,7 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.api.crud.apiCrudProject.domain.entity.ActionStatus;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.ActionStatus;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;

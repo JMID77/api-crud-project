@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.api.crud.apiCrudProject.domain.entity.Action;
-import com.api.crud.apiCrudProject.domain.entity.ActionStatus;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.ActionStatus;
 import com.api.crud.apiCrudProject.domain.repository.ActionRepository;
 
 @SpringBootTest

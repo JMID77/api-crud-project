@@ -1,11 +1,15 @@
-package com.api.crud.apiCrudProject.infrastructure.security;
+package com.api.crud.apiCrudProject.infrastructure.security.service;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.api.crud.apiCrudProject.domain.entity.Language;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.Language;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.RoleType;
 import com.api.crud.apiCrudProject.domain.entity.UserSystem;
 import com.api.crud.apiCrudProject.domain.repository.UserSystemRepository;
 
@@ -14,6 +18,8 @@ public class UserSystemTechnicalService {
 
     @Autowired
     private UserSystemRepository userSysRepository;
+    @Autowired
+    private UserSystemTechnicalMapper userSysMapper;
 
     public UserSystem getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -36,8 +42,11 @@ public class UserSystemTechnicalService {
         return Language.ENGLISH.getCode();
     }
 
-    // public UserDetails getCurrentUser() {
-    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //     return (UserDetails) authentication.getPrincipal();
-    // }
+    public List<UserDetails> retrieveAllUserSystem() {
+        return this.userSysRepository.retrieveAll().stream().map(this.userSysMapper::toUserDetail).toList();
+    }
+
+    public String mapperRoleTypeToString(RoleType role) {
+        return this.userSysMapper.roleTypeToString(role);
+    }
 }

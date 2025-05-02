@@ -6,7 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import com.api.crud.apiCrudProject.application.dto.ActionResponse;
-import com.api.crud.apiCrudProject.domain.entity.ActionStatus;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.ActionStatus;
 import com.api.crud.apiCrudProject.interaction.controller.ActionController;
 
 @Component

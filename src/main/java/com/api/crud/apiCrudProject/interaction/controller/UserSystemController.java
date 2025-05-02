@@ -19,7 +19,8 @@ import com.api.crud.apiCrudProject.application.dto.UserSystemRequest;
 import com.api.crud.apiCrudProject.application.dto.UserSystemResponse;
 import com.api.crud.apiCrudProject.application.service.UserSystemService;
 import com.api.crud.apiCrudProject.domain.entity.UserSystem;
-import com.api.crud.apiCrudProject.infrastructure.security.UserSystemTechnicalService;
+import com.api.crud.apiCrudProject.infrastructure.security.service.TranslationService;
+import com.api.crud.apiCrudProject.infrastructure.security.service.UserSystemTechnicalService;
 
 import jakarta.validation.Valid;
 
@@ -29,22 +30,27 @@ public class UserSystemController {
     
     private final UserSystemService userSystemService;
     private final UserSystemTechnicalService currentUserService;
+    private final TranslationService translationService;
 
-    public UserSystemController(UserSystemService userSystemService, UserSystemTechnicalService currentUserService) {
+    public UserSystemController(UserSystemService userSystemService, 
+                                            UserSystemTechnicalService currentUserService, 
+                                            TranslationService translationService) {
         this.userSystemService = userSystemService;
         this.currentUserService = currentUserService;
+        this.translationService = translationService;
     }
 
     @GetMapping("/admins/check")
     public String admin() {
         // Récupérer l'utilisateur authentifié
         UserSystem user = this.currentUserService.getCurrentUser();
-        return "Hello Administrator ["+user.getUsername()+"] !";
+        
+        return "Hello Administrator ["+user.getUsername()+"] !\n"+this.translationService.translate("internalization.example.admin.hello");
     }
 
     @GetMapping("/users/check")
     public String user(@AuthenticationPrincipal UserDetails userDetails) {  // @AuthenticationPrincipal => Récupérer l'utilisateur authentifié
-        return "Hello simple User ["+userDetails.getUsername()+"] !";
+        return "Hello simple User ["+userDetails.getUsername()+"] !\n"+this.translationService.translate("internalization.example.user.hello");
     }
 
 

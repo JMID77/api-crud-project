@@ -1,6 +1,6 @@
 package com.api.crud.apiCrudProject.domain.entity.converter;
 
-import com.api.crud.apiCrudProject.domain.entity.Language;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.Language;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

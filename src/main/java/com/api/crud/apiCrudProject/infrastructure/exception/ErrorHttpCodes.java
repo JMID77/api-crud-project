@@ -1,5 +1,7 @@
 package com.api.crud.apiCrudProject.infrastructure.exception;
 
+import com.api.crud.apiCrudProject.infrastructure.security.service.TranslationService;
+
 public enum ErrorHttpCodes {
     // Enum avec valeur HTTP, code d'erreur et message associé
     INTERNAL_SERVER_ERROR(500, "INTERNAL_SERVER_ERROR", "{error.http.internal.server.error}"),
@@ -32,6 +34,15 @@ public enum ErrorHttpCodes {
     // Getter pour récupérer le message d'erreur
     public String getMessage() {
         return errorMessage;
+    }
+
+    // Traduction dynamique
+    public String resolveMessage(TranslationService translationService) {
+        return translationService.translate(stripBraces(errorMessage));
+    }
+
+    private String stripBraces(String key) {
+        return key.replaceAll("[{}]", "");
     }
 
 }

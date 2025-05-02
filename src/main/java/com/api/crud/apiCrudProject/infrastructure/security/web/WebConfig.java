@@ -29,7 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
         messageSource.setBasename("classpath:messages");    // messages.properties
 
         messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
-
+        messageSource.setUseCodeAsDefaultMessage(true);
+        
         return messageSource;
     }
 }

@@ -1,7 +1,7 @@
 package com.api.crud.apiCrudProject.infrastructure.hateoas;
 
 import com.api.crud.apiCrudProject.application.dto.ActionResponse;
-import com.api.crud.apiCrudProject.domain.entity.ActionStatus;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.ActionStatus;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

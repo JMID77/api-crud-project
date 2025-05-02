@@ -2,6 +2,8 @@ package com.api.crud.apiCrudProject.domain.entity;
 
 
 import com.api.crud.apiCrudProject.domain.entity.converter.LanguageConverter;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.Language;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.RoleType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -32,7 +34,7 @@ public class UserSystem {
 
     @Column(nullable = false, unique = true, length = 50)
     private String username;
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 200)
     private String password;
 
     // @Enumerated(EnumType.STRING)

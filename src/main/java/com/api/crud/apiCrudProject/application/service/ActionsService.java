@@ -9,7 +9,7 @@ import com.api.crud.apiCrudProject.application.dto.ActionRequest;
 import com.api.crud.apiCrudProject.application.dto.ActionResponse;
 import com.api.crud.apiCrudProject.application.mapper.ActionMapper;
 import com.api.crud.apiCrudProject.domain.entity.Action;
-import com.api.crud.apiCrudProject.domain.entity.ActionStatus;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.ActionStatus;
 import com.api.crud.apiCrudProject.domain.repository.ActionRepository;
 import com.api.crud.apiCrudProject.infrastructure.exception.Entities;
 import com.api.crud.apiCrudProject.infrastructure.exception.RessourceNotFoundException;

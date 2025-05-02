@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import com.api.crud.apiCrudProject.application.dto.ActionRequest;
 import com.api.crud.apiCrudProject.application.dto.ActionResponse;
 import com.api.crud.apiCrudProject.domain.entity.Action;
-import com.api.crud.apiCrudProject.domain.entity.ActionStatus;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.ActionStatus;
 
 public class ActionMapperTest {
     private ActionMapper actionMapper;

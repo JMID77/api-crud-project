@@ -1,4 +1,4 @@
-package com.api.crud.apiCrudProject.domain.entity;
+package com.api.crud.apiCrudProject.domain.entity.enumeration;
 
 public enum Language {
     FRENCH("fr", "Français", "French"),

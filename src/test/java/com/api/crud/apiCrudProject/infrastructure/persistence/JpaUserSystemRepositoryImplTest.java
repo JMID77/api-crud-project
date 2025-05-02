@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.api.crud.apiCrudProject.domain.entity.RoleType;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.RoleType;
 import com.api.crud.apiCrudProject.domain.entity.UserSystem;
 import com.api.crud.apiCrudProject.domain.repository.UserSystemRepository;
 

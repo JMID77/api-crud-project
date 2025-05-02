@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.crud.apiCrudProject.application.dto.ActionRequest;
 import com.api.crud.apiCrudProject.application.dto.ActionResponse;
 import com.api.crud.apiCrudProject.application.service.ActionsService;
-import com.api.crud.apiCrudProject.domain.entity.ActionStatus;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.ActionStatus;
 import com.api.crud.apiCrudProject.infrastructure.hateoas.ActionContext;
 import com.api.crud.apiCrudProject.infrastructure.hateoas.ActionModelAssembler;
 
