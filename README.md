@@ -93,6 +93,13 @@ Pour plus de détails sur l’architecture, les choix techniques et l’évoluti
 
 ➡️ [Schéma global du projet – Notion](https://polite-payment-f71.notion.site/Sch-ma-global-du-projet-1d59b8a90bd9807fa706d5d9c579ad33?pvs=4)
 
+Pour plus de détails sur la gestion de la sécurité (Basic Auth) et gestion de la langue selon utilisateur technique connecté, consulte le wiki associé :
+
+➡️ [Gestion de la sécurité et internationalisation – Notion](https://polite-payment-f71.notion.site/S-curit-1e69b8a90bd980dca9f4ec80c7300c74?pvs=4)
+
+### _Remarque:_
+_Le choix du Basic Auth est selon mon niveau d'apprentissage.  Dans les prochains jours je compte mettre en place une authentification via Token._
+
 Voici pour la mise en place des tests sur mon mini-projet:
 
 ➡️ [Mise en place des tests - Notion](https://polite-payment-f71.notion.site/Mise-en-place-des-tests-1d79b8a90bd9801eacf8f0bbd5253685?pvs=4)
