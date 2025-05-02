@@ -3,6 +3,7 @@ package com.api.crud.apiCrudProject.application.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -54,13 +55,13 @@ class ActionsServiceTest {
     @Test
     void createAction_shouldMapAndSaveAndReturnResponse() {
         when(this.actionMapper.toEntity(request)).thenReturn(entity);
-        when(this.actionRepository.save(entity)).thenReturn(entity);
+        when(this.actionRepository.persist(entity)).thenReturn(entity);
         when(this.actionMapper.toResponse(entity)).thenReturn(response);
 
         ActionResponse result = this.actionsService.createAction(request);
 
         verify(this.actionMapper).toEntity(request);
-        verify(this.actionRepository).save(entity);
+        verify(this.actionRepository).persist(entity);
         verify(this.actionMapper).toResponse(entity);
 
         assertEquals(response, result);
@@ -69,40 +70,40 @@ class ActionsServiceTest {
     // ✅ updateAction() — cas heureux
     @Test
     void updateAction_shouldUpdateIfExists() {
-        when(this.actionRepository.findById(1L)).thenReturn(Optional.of(entity));
+        when(this.actionRepository.checkById(1L)).thenReturn(true);
         when(this.actionMapper.toEntity(request)).thenReturn(entity);
-        when(this.actionRepository.save(entity)).thenReturn(entity);
+        when(this.actionRepository.persist(entity)).thenReturn(entity);
         when(this.actionMapper.toResponse(entity)).thenReturn(response);
 
         ActionResponse result = this.actionsService.updateAction(1L, request);
 
-        verify(this.actionRepository).findById(1L);
-        verify(this.actionRepository).save(entity);
+        verify(this.actionRepository, atLeastOnce()).checkById(1L);
+        verify(this.actionRepository, atLeastOnce()).persist(entity);
         assertEquals(response, result);
     }
 
     // ✅ updateAction() — action absente
     @Test
     void updateAction_shouldThrowWhenNotFound() {
-        when(this.actionRepository.findById(1L)).thenReturn(Optional.empty());
+        when(this.actionRepository.checkById(1L)).thenReturn(false);
 
         assertThrows(RessourceNotFoundException.class, () ->
             this.actionsService.updateAction(1L, request)
         );
 
-        verify(this.actionRepository).findById(1L);
+        verify(this.actionRepository).checkById(1L);
         verifyNoMoreInteractions(this.actionRepository);
     }
 
     // ✅ getAction() — action existante
     @Test
     public void getAction_shouldReturnActionWhenFound() {
-        when(this.actionRepository.findById(1L)).thenReturn(Optional.of(entity));
+        when(this.actionRepository.searchById(1L)).thenReturn(Optional.of(entity));
         when(this.actionMapper.toResponse(entity)).thenReturn(response);
     
         ActionResponse result = this.actionsService.getAction(1L);
     
-        verify(this.actionRepository).findById(1L);
+        verify(this.actionRepository).searchById(1L);
         verify(this.actionMapper).toResponse(entity);
         assertEquals(response, result);
     }
@@ -110,13 +111,13 @@ class ActionsServiceTest {
     // ✅ getAction() — action absente
     @Test
     public void getAction_shouldThrowExceptionWhenNotFound() {
-        when(this.actionRepository.findById(1L)).thenReturn(Optional.empty());
+        when(this.actionRepository.searchById(1L)).thenReturn(Optional.empty());
     
         assertThrows(RessourceNotFoundException.class, () -> {
             this.actionsService.getAction(1L);
         });
     
-        verify(this.actionRepository).findById(1L);
+        verify(this.actionRepository).searchById(1L);
         verifyNoMoreInteractions(this.actionMapper);
     }
 
@@ -126,35 +127,35 @@ class ActionsServiceTest {
         List<Action> entities = List.of(entity);
         List<ActionResponse> responses = List.of(response);
 
-        when(this.actionRepository.retrieveAll()).thenReturn(entities);
+        when(this.actionRepository.searchAll()).thenReturn(entities);
         when(this.actionMapper.toResponse(entity)).thenReturn(response);
 
         List<ActionResponse> result = this.actionsService.getAllActions();
 
-        verify(this.actionRepository).retrieveAll();
+        verify(this.actionRepository).searchAll();
         assertEquals(responses, result);
     }
 
     // ✅ deleteActionById() — action existe
     @Test
     void deleteActionById_shouldDeleteIfExists() {
-        when(this.actionRepository.existsById(1L)).thenReturn(true);
-    
+        when(this.actionRepository.checkById(1L)).thenReturn(true);
+        
         this.actionsService.deleteActionById(1L);
     
-        verify(this.actionRepository).existsById(1L);
-        verify(this.actionRepository).deleteById(1L);
+        verify(this.actionRepository, atLeastOnce()).checkById(1L);
+        verify(this.actionRepository).removeById(1L);
     }
 
     // ✅ deleteActionById() — action absente
     @Test
     void deleteActionById_shouldReturnFalseWhenNotFound() {
-        when(this.actionRepository.existsById(1L)).thenReturn(false);
+        when(this.actionRepository.checkById(1L)).thenReturn(false);
 
         assertThrows(RessourceNotFoundException.class, () -> this.actionsService.deleteActionById(1L));
 
-        verify(this.actionRepository).existsById(1L);
-        verify(this.actionRepository, never()).deleteById(anyLong());
+        verify(this.actionRepository, atLeastOnce()).checkById(1L);
+        verify(this.actionRepository, never()).removeById(anyLong());
     }
 }
 

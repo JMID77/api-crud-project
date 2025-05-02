@@ -16,40 +16,33 @@ import com.api.crud.apiCrudProject.domain.repository.ActionRepository;
 public class JpaActionRepositoryImpl implements ActionRepository {
     private JpaActionRepository actionRepository;
     
-    // @PersistenceContext
-    // EntityManager entityManager; // donné par Spring pour dialoguer avec la base
     
     public JpaActionRepositoryImpl(@Lazy JpaActionRepository actionRepository) {
         this.actionRepository = actionRepository;
     }
 
     @Override
-    public Action save(Action action) {
+    public Action persist(Action action) {
         return this.actionRepository.save(action);
     }
 
     @Override
-    public Optional<Action> findById(Long id) {
+    public Optional<Action> searchById(Long id) {
         return this.actionRepository.findById(id);
     }
 
     @Override
-    public List<Action> retrieveAll() {
+    public List<Action> searchAll() {
         return actionRepository.findAll();
-
-
-        // Code pour => @PersistenceContext
-        // return entityManager.createQuery("FROM Action", Action.class)
-        //                      .getResultList();
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void removeById(Long id) {
         this.actionRepository.deleteById(id);
     }
 
     @Override
-    public boolean existsById(Long id) {
+    public boolean checkById(Long id) {
         return this.actionRepository.existsById(id);
     }
 

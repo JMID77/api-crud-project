@@ -19,17 +19,17 @@ public class JpaSandBoxRepositoryImpl implements SandboxRepository{
     }
 
     @Override
-    public Sandbox save(Sandbox sandbox) {
+    public Sandbox persist(Sandbox sandbox) {
         return this.jpaSandbox.save(sandbox);
     }
 
     @Override
-    public List<Sandbox> retrieveAll() {
+    public List<Sandbox> searchAll() {
         return this.jpaSandbox.findAll();
     }
 
     @Override
-    public void deleteAll() {
+    public void removeAll() {
         this.jpaSandbox.deleteAll();
     }
 

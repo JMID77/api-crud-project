@@ -24,7 +24,7 @@ public class UserSystemService {
     }
 
     public UserSystemResponse createUserSystem(UserSystemRequest userRequest) {
-        var user = this.userSysRepository.save(this.userSysMapper.toEntity(userRequest));
+        var user = this.userSysRepository.persist(this.userSysMapper.toEntity(userRequest));
         return this.userSysMapper.toResponse(user);
     }
 
@@ -36,7 +36,7 @@ public class UserSystemService {
 
             theUserSys.setId(id);
     
-            var user = this.userSysRepository.save(theUserSys);
+            var user = this.userSysRepository.persist(theUserSys);
             userSysResponse = this.userSysMapper.toResponse(user);
         }
         
@@ -44,24 +44,24 @@ public class UserSystemService {
     }
 
     public UserSystemResponse getUserSystem(Long id) {
-        return this.userSysRepository.findById(id)
+        return this.userSysRepository.searchById(id)
                                         .map(this.userSysMapper::toResponse)
                                         .orElseThrow(() -> new RessourceNotFoundException(Entities.USER_SYSTEM, id));
     }
 
     public List<UserSystemResponse> getAllUserSystems() {
-        return this.userSysRepository.retrieveAll().stream().map(this.userSysMapper::toResponse).toList();
+        return this.userSysRepository.searchAll().stream().map(this.userSysMapper::toResponse).toList();
     }
 
     public void deleteUserSystem(Long id) {
         if (checkExistsUserSystem(id)) {
-            this.userSysRepository.deleteById(id);
+            this.userSysRepository.removeById(id);
         }
     }
 
     
     private boolean checkExistsUserSystem(Long id) {
-        UserSystem existingUserSys = this.userSysRepository.findById(id).orElse(null);
+        UserSystem existingUserSys = this.userSysRepository.searchById(id).orElse(null);
         if (existingUserSys == null || existingUserSys.getId() != id) {
             throw new RessourceNotFoundException(Entities.USER_SYSTEM, id);
         }

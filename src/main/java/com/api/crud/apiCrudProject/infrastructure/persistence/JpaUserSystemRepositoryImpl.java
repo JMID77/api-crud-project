@@ -23,27 +23,27 @@ public class JpaUserSystemRepositoryImpl implements UserSystemRepository {
 
     
     @Override
-    public UserSystem save(UserSystem userSys) {
+    public UserSystem persist(UserSystem userSys) {
         return this.userSysRepository.save(userSys);
     }
 
     @Override
-    public Optional<UserSystem> findById(Long id) {
+    public Optional<UserSystem> searchById(Long id) {
         return this.userSysRepository.findById(id);
     }
 
     @Override
-    public List<UserSystem> retrieveAll() {
+    public List<UserSystem> searchAll() {
         return this.userSysRepository.findAll();
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void removeById(Long id) {
         this.userSysRepository.deleteById(id);
     }
 
     @Override
-    public boolean existsById(Long id) {
+    public boolean checkById(Long id) {
         return this.userSysRepository.existsById(id);
     }
 

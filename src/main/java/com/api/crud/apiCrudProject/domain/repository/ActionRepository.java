@@ -6,11 +6,11 @@ import java.util.Optional;
 import com.api.crud.apiCrudProject.domain.entity.Action;
 
 public interface ActionRepository {
-    Action save(Action action);
-    Optional<Action> findById(Long id);
-    List<Action> retrieveAll();
-    void deleteById(Long id);
-    boolean existsById(Long id);
+    Action persist(Action action);
+    Optional<Action> searchById(Long id);
+    List<Action> searchAll();
+    void removeById(Long id);
+    boolean checkById(Long id);
 
     List<Action> searchActionStatusByStatus(String actionStatus);
 }

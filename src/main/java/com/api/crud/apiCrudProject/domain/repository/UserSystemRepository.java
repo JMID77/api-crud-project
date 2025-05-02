@@ -6,11 +6,11 @@ import java.util.Optional;
 import com.api.crud.apiCrudProject.domain.entity.UserSystem;
 
 public interface UserSystemRepository {
-    UserSystem save(UserSystem userSys);
-    Optional<UserSystem> findById(Long id);
-    List<UserSystem> retrieveAll();
-    void deleteById(Long id);
-    boolean existsById(Long id);
+    UserSystem persist(UserSystem userSys);
+    Optional<UserSystem> searchById(Long id);
+    List<UserSystem> searchAll();
+    void removeById(Long id);
+    boolean checkById(Long id);
 
     Optional<UserSystem> searchByUsername(String username);
 }

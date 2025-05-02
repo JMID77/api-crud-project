@@ -43,7 +43,7 @@ public class UserSystemTechnicalService {
     }
 
     public List<UserDetails> retrieveAllUserSystem() {
-        return this.userSysRepository.retrieveAll().stream().map(this.userSysMapper::toUserDetail).toList();
+        return this.userSysRepository.searchAll().stream().map(this.userSysMapper::toUserDetail).toList();
     }
 
     public String mapperRoleTypeToString(RoleType role) {

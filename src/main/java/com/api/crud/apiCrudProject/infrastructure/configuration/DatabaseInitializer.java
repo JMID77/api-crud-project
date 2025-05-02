@@ -21,13 +21,13 @@ public class DatabaseInitializer {
     @PostConstruct
     public void init() {
         // Vérification que la base de données est vide avant l'initialisation
-        if (userSysRepository.retrieveAll().isEmpty()) {
+        if (userSysRepository.searchAll().isEmpty()) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-            userSysRepository.save(new UserSystem(null, "adminEn", encoder.encode("admin123"), Language.ENGLISH, RoleType.ROLE_ADMIN));
-            userSysRepository.save(new UserSystem(null, "adminFr", encoder.encode("admin123"), Language.FRENCH, RoleType.ROLE_ADMIN));
-            userSysRepository.save(new UserSystem(null, "userEn", encoder.encode("user123"), Language.ENGLISH, RoleType.ROLE_USER));
-            userSysRepository.save(new UserSystem(null, "userFr", encoder.encode("user123"), Language.FRENCH, RoleType.ROLE_USER));
+            userSysRepository.persist(new UserSystem(null, "adminEn", encoder.encode("admin123"), Language.ENGLISH, RoleType.ROLE_ADMIN));
+            userSysRepository.persist(new UserSystem(null, "adminFr", encoder.encode("admin123"), Language.FRENCH, RoleType.ROLE_ADMIN));
+            userSysRepository.persist(new UserSystem(null, "userEn", encoder.encode("user123"), Language.ENGLISH, RoleType.ROLE_USER));
+            userSysRepository.persist(new UserSystem(null, "userFr", encoder.encode("user123"), Language.FRENCH, RoleType.ROLE_USER));
 
             // Optional<UserSystem> userSys = userSysRepository.searchByUsername("adminEn");
             // userSys.ifPresent(user -> {

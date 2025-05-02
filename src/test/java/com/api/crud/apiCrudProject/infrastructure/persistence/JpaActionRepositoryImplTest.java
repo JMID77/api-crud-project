@@ -55,7 +55,7 @@ class JpaActionRepositoryImplTest {
                 .actionStatus(ActionStatus.CREATED)
                 .build();
         
-        Action saved = actionRepository.save(action);
+        Action saved = actionRepository.persist(action);
 
         assertNotNull(saved.getId(), "ID should be generated");
         assertEquals("Test Persistence", saved.getActionName());
@@ -69,8 +69,8 @@ class JpaActionRepositoryImplTest {
                 .actionStatus(ActionStatus.IN_PROGRESS)
                 .build();
 
-        Action saved = actionRepository.save(action);
-        Optional<Action> found = actionRepository.findById(saved.getId());
+        Action saved = actionRepository.persist(action);
+        Optional<Action> found = actionRepository.searchById(saved.getId());
 
         assertTrue(found.isPresent());
         assertEquals("Find Me", found.get().getActionName());
@@ -97,8 +97,8 @@ class JpaActionRepositoryImplTest {
                 .actionStatus(ActionStatus.CANCELLED)
                 .build();
 
-        Action saved = actionRepository.save(action);
-        assertTrue(actionRepository.existsById(saved.getId()));
+        Action saved = actionRepository.persist(action);
+        assertTrue(actionRepository.checkById(saved.getId()));
     }
 
     @Test
@@ -108,10 +108,10 @@ class JpaActionRepositoryImplTest {
                 .actionStatus(ActionStatus.CREATED)
                 .build();
 
-        Action saved = actionRepository.save(action);
+        Action saved = actionRepository.persist(action);
         Long id = saved.getId();
 
-        actionRepository.deleteById(id);
-        assertFalse(actionRepository.findById(id).isPresent());
+        actionRepository.removeById(id);
+        assertFalse(actionRepository.searchById(id).isPresent());
     }
 }

@@ -20,27 +20,27 @@ public class JpaUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User save(User user) {
+    public User persist(User user) {
         return this.userRepository.save(user);
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> searchById(Long id) {
         return this.userRepository.findById(id);
     }
 
     @Override
-    public List<User> retrieveAll() {
+    public List<User> searchAll() {
         return userRepository.findAll();
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void removeById(Long id) {
         this.userRepository.deleteById(id);
     }
 
     @Override
-    public boolean existsById(Long id) {
+    public boolean checkById(Long id) {
         return this.userRepository.existsById(id);
     }
 }

@@ -25,7 +25,7 @@ public class ActionsService {
     }
 
     public ActionResponse createAction(ActionRequest actionRequest) {
-        var action = this.actionRepository.save(this.actionMapper.toEntity(actionRequest));
+        var action = this.actionRepository.persist(this.actionMapper.toEntity(actionRequest));
         return this.actionMapper.toResponse(action);
     }
     
@@ -33,11 +33,13 @@ public class ActionsService {
         ActionResponse actionResponse = null;
 
         if (checkExistsAction(id)) {
-            Action theAction = this.actionMapper.toEntity(actionRequest);
-
+            System.out.println("actionRequest: " + actionRequest);
+            System.out.println("actionRequest: " + actionRequest.actionName()+"/"+actionRequest.actionStatus());
+            Action theAction = actionMapper.toEntity(actionRequest);
+            
             theAction.setId(id);
             
-            var action = this.actionRepository.save(theAction);
+            var action = this.actionRepository.persist(theAction);
             actionResponse = this.actionMapper.toResponse(action);
         }
 
@@ -45,18 +47,18 @@ public class ActionsService {
     }
 
     public ActionResponse getAction(Long id) {
-        return this.actionRepository.findById(id)
+        return this.actionRepository.searchById(id)
                                         .map(this.actionMapper::toResponse)
                                         .orElseThrow(() -> new RessourceNotFoundException(Entities.ACTION, id));
     }
 
     public List<ActionResponse> getAllActions() {
-        return this.actionRepository.retrieveAll().stream().map(actionMapper::toResponse).toList();
+        return this.actionRepository.searchAll().stream().map(actionMapper::toResponse).toList();
     }
 
     public void deleteActionById(Long id) {
         if (checkExistsAction(id)) {
-            this.actionRepository.deleteById(id);
+            this.actionRepository.removeById(id);
         }
     }
 
@@ -65,8 +67,7 @@ public class ActionsService {
     }
 
     private boolean checkExistsAction(Long id) {
-        Action existingAction = this.actionRepository.findById(id).orElse(null);
-        if (existingAction == null || existingAction.getId() != id) {
+        if (!this.actionRepository.checkById(id)) {
             throw new RessourceNotFoundException(Entities.ACTION, id);
         }
         return true;

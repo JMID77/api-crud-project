@@ -44,11 +44,11 @@ public class JpaSandBoxImplTest {
         // Given
         Sandbox sandbox1 = new Sandbox(null, "Sandbox 1");
         Sandbox sandbox2 = new Sandbox(null, "Sandbox 2");
-        sandboxRepository.save(sandbox1);
-        sandboxRepository.save(sandbox2);
+        sandboxRepository.persist(sandbox1);
+        sandboxRepository.persist(sandbox2);
 
         // When
-        List<Sandbox> sandboxes = sandboxRepository.retrieveAll();
+        List<Sandbox> sandboxes = sandboxRepository.searchAll();
 
         // Then
         assertNotNull(sandboxes);
@@ -58,12 +58,12 @@ public class JpaSandBoxImplTest {
     @Test
     void testFindByName() {
         // Given
-        sandboxRepository.deleteAll();
+        sandboxRepository.removeAll();
 
         Sandbox sandbox1 = new Sandbox(null, "Sandbox 1");
         Sandbox sandbox2 = new Sandbox(null, "Sandbox 2");
-        sandboxRepository.save(sandbox1);
-        sandboxRepository.save(sandbox2);
+        sandboxRepository.persist(sandbox1);
+        sandboxRepository.persist(sandbox2);
 
         // When
         List<Sandbox> sandboxes = sandboxRepository.searchByName("Sandbox 2");
@@ -80,7 +80,7 @@ public class JpaSandBoxImplTest {
         Sandbox sandbox = new Sandbox(null, "Test Sandbox");
 
         // When
-        Sandbox savedSandbox = sandboxRepository.save(sandbox);
+        Sandbox savedSandbox = sandboxRepository.persist(sandbox);
 
         // Then
         assertNotNull(savedSandbox.getId(), "ID should be generated");

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.api.crud.apiCrudProject.domain.entity.enumeration.Language;
 import com.api.crud.apiCrudProject.domain.entity.enumeration.RoleType;
 import com.api.crud.apiCrudProject.domain.entity.UserSystem;
 import com.api.crud.apiCrudProject.domain.repository.UserSystemRepository;
@@ -40,14 +41,16 @@ public class JpaUserSystemRepositoryImplTest {
         UserSystem userSys = UserSystem.builder()
                 .username("USER_ADMIN")
                 .role(RoleType.ROLE_ADMIN)
+                .language(Language.FRENCH)
                 .password("password")
                 .build();
         
-        UserSystem saved = userSysRepository.save(userSys);
+        UserSystem saved = userSysRepository.persist(userSys);
 
         assertNotNull(saved.getId(), "ID should be generated");
         assertEquals("USER_ADMIN", saved.getUsername(), "UserName not match");
         assertEquals("password", saved.getPassword(), "Password not match");
+        assertEquals(Language.FRENCH.name(), saved.getLanguage().name(), "Language not match");
         assertEquals(RoleType.ROLE_ADMIN.name(), saved.getRole().name(), "RoleType not match");
     }
 
