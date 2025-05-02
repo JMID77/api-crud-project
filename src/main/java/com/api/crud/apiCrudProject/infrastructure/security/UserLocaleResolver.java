@@ -33,5 +33,4 @@ public class UserLocaleResolver extends AcceptHeaderLocaleResolver {
 
         return Locale.getDefault();
     }
-
 }

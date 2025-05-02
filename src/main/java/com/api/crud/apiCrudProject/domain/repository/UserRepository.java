@@ -11,5 +11,4 @@ public interface UserRepository {
     List<User> retrieveAll();
     void deleteById(Long id);
     boolean existsById(Long id);
-    
 }
