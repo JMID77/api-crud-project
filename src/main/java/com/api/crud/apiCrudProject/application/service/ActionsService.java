@@ -33,8 +33,6 @@ public class ActionsService {
         ActionResponse actionResponse = null;
 
         if (checkExistsAction(id)) {
-            System.out.println("actionRequest: " + actionRequest);
-            System.out.println("actionRequest: " + actionRequest.actionName()+"/"+actionRequest.actionStatus());
             Action theAction = actionMapper.toEntity(actionRequest);
             
             theAction.setId(id);
@@ -71,6 +69,5 @@ public class ActionsService {
             throw new RessourceNotFoundException(Entities.ACTION, id);
         }
         return true;
-    } 
-
+    }
 }

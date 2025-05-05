@@ -33,14 +33,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // Autorisation pour les URL accessibles à tout le monde
                 .requestMatchers("/api/vLS.1/**", 
                                     "/error").permitAll()       // Accès libre aux routes /api/vLS.1
-                // // Autorisation pour les URL accessibles aux utilisateurs ADMIN ou USER
-                // .requestMatchers("/api/vES.1/**")
-                //                 .hasAnyRole(this.userSysTechService.mapperRoleTypeToString(RoleType.ROLE_USER), 
-                //                                 this.userSysTechService.mapperRoleTypeToString(RoleType.ROLE_ADMIN))       // Accessible aux utilisateurs et administrateurs
+                // Autorisation pour les URL accessibles aux utilisateurs ADMIN ou USER
+                .requestMatchers("/api/vES.1/**")
+                                .hasAnyRole(this.userSysTechService.mapperRoleTypeToString(RoleType.ROLE_USER), 
+                                                this.userSysTechService.mapperRoleTypeToString(RoleType.ROLE_ADMIN))       // Accessible aux utilisateurs et administrateurs
                 // Autorisation pour les URL accessibles uniquement aux administrateurs
                 .requestMatchers("/api/vIS.1/internal/admins/**")
                             .hasRole(this.userSysTechService.mapperRoleTypeToString(RoleType.ROLE_ADMIN))          // Accessible uniquement aux administrateurs
@@ -63,7 +64,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsManager userDetailsService() {
         List<UserDetails> users = this.userSysTechService.retrieveAllUserSystem();
-
+        
         return new InMemoryUserDetailsManager(users);
     }
 

@@ -26,9 +26,7 @@ public class ActionRequestValidationTest {
     @Test
     public void whenValid_thenNoViolations() {
         ActionRequest request = createActionRequest("Faire les courses", ActionStatus.CREATED);
-        System.out.println("Validating request: " + request);
         Set<ConstraintViolation<ActionRequest>> violations = this.validator.validate(request);
-        System.out.println("Validationg violations: "+violations);
         assertTrue(violations.isEmpty(), "Expected no constraint violations, but found: " + violations);
     }
 

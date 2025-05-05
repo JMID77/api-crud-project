@@ -13,7 +13,7 @@ public class TranslationService {
 
     public String translate(String key) {
         try {
-            return messageSource.getMessage(key, null, LocaleContextHolder.getLocale());
+            return messageSource.getMessage(cleanMessage(key), null, LocaleContextHolder.getLocale());
         } catch (NoSuchMessageException ex) {
             return "Translation not found for: " + key; // Ou une valeur par défaut    
         }
@@ -21,9 +21,17 @@ public class TranslationService {
 
     public String translate(String key, Object... args) {
         try {
-            return messageSource.getMessage(key, args, LocaleContextHolder.getLocale());
+            return messageSource.getMessage(cleanMessage(key), args, LocaleContextHolder.getLocale());
         } catch (NoSuchMessageException ex) {
             return "Translation not found for: " + key; // Ou une valeur par défaut    
         }
+    }
+
+    private String cleanMessage(String msg) {
+        if (msg == null) {
+            return "";
+        }
+        
+        return msg.replace("{", "").replace("}", "");
     }
 }

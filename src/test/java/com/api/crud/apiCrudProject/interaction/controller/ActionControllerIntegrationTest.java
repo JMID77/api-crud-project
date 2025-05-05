@@ -1,138 +1,255 @@
 package com.api.crud.apiCrudProject.interaction.controller;
 
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 import com.api.crud.apiCrudProject.ApiCrudProjectApplication;
+import com.api.crud.apiCrudProject.application.dto.ActionRequest;
+import com.api.crud.apiCrudProject.domain.entity.enumeration.ActionStatus;
+import com.api.crud.apiCrudProject.infrastructure.security.SecurityConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @SpringBootTest(classes = ApiCrudProjectApplication.class)
 @AutoConfigureMockMvc
+@Import(SecurityConfig.class)
 public class ActionControllerIntegrationTest {
 
-    // @Autowired
-    // private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-    // @Autowired
-    // private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    
+    // @Test
+    @ParameterizedTest
+    @CsvSource({
+        "adminFr, admin123",
+        "adminEn, admin123",
+        "userFr, user123",
+        "userEn, user123"
+    })
+    void createAction_shouldReturn201_withHateoas_forAllAuthorizedUsers(String userName, String pwd) throws Exception {
+        ActionRequest request = new ActionRequest("Test Action - "+userName, ActionStatus.CREATED);
+
+        mockMvc.perform(post("/api/vES.1/actions")
+                .with(httpBasic(userName, pwd))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.actionName").value("Test Action - "+userName))
+            .andExpect(jsonPath("$._links").exists());
+    }
 
     // @Test
-    // void createAction_shouldReturn201_withHateoas() throws Exception {
-    //     ActionRequest request = new ActionRequest("Test Action", ActionStatus.CREATED);
+    @ParameterizedTest
+    @CsvSource({
+        "adminEn, admin123"
+        // "adminFr, admin123"
+        // "userEn, user123"
+        // "userFr, user123"
+    })
+    void createAction_shouldReturn400_whenInvalid_forSpecificUsers(String userName, String pwd) throws Exception {
+        ActionRequest request = new ActionRequest("   ", ActionStatus.CANCELLED);
 
-    //     mockMvc.perform(post("/api/v1/actions")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(request)))
-    //         .andExpect(status().isCreated())
-    //         .andExpect(jsonPath("$.actionName").value("Test Action"))
-    //         .andExpect(jsonPath("$._links").exists());
-    // }
-
-    // @Test
-    // void createAction_shouldReturn400_whenInvalid() throws Exception {
-    //     ActionRequest request = new ActionRequest("   ", null);
-
-    //     mockMvc.perform(post("/api/v1/actions")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(request)))
-    //         .andExpect(status().isBadRequest());
-    // }
+        mockMvc.perform(post("/api/vES.1/actions")
+                .with(httpBasic(userName, pwd))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isBadRequest());
+    }
 
     // @Test
-    // void updateAction_shouldReturn200_whenValid() throws Exception {
-    //     ActionRequest create = new ActionRequest("Initial", ActionStatus.CREATED);
+    @ParameterizedTest
+    @CsvSource({
+        "adminFr, admin123",
+        "adminEn, admin123",
+        "userFr, user123",
+        "userEn, user123"
+    })
+    void updateAction_shouldReturn200_whenValid_forAllAuthorizedUsers(String userName, String pwd) throws Exception {
+        ActionRequest create = new ActionRequest("Initial - "+userName, ActionStatus.CREATED);
 
-    //     String response = mockMvc.perform(post("/api/v1/actions")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(create)))
-    //         .andReturn().getResponse().getContentAsString();
+        String response = mockMvc.perform(post("/api/vES.1/actions")
+                .with(httpBasic(userName, pwd))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(create)))
+            .andReturn().getResponse().getContentAsString();
 
-    //     long id = objectMapper.readTree(response).get("id").asLong();
+        long id = objectMapper.readTree(response).get("id").asLong();
 
-    //     ActionRequest update = new ActionRequest("Modified", ActionStatus.IN_PROGRESS);
+        ActionRequest update = new ActionRequest("Modified - "+userName, ActionStatus.IN_PROGRESS);
 
-    //     mockMvc.perform(put("/api/v1/actions/" + id)
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(update)))
-    //         .andExpect(status().isOk())
-    //         .andExpect(jsonPath("$.actionName").value("Modified"));
-    // }
-
-    // @Test
-    // void updateAction_shouldReturn404_whenNotFound() throws Exception {
-    //     ActionRequest update = new ActionRequest("Modified", ActionStatus.IN_PROGRESS);
-
-    //     mockMvc.perform(put("/api/v1/actions/999999")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(update)))
-    //         .andExpect(status().isNotFound());
-    // }
-
-    // @Test
-    // void updateAction_shouldReturn400_whenInvalid() throws Exception {
-    //     ActionRequest update = new ActionRequest("", null);
-
-    //     mockMvc.perform(put("/api/v1/actions/1")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(update)))
-    //         .andExpect(status().isBadRequest());
-    // }
+        mockMvc.perform(put("/api/vES.1/actions/" + id)
+                .with(httpBasic(userName, pwd))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(update)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.actionName").value("Modified - "+userName))
+            .andExpect(jsonPath("$.actionStatus").value(ActionStatus.IN_PROGRESS.name()));
+    }
 
     // @Test
-    // void getActionById_shouldReturn200_whenExists() throws Exception {
-    //     ActionRequest request = new ActionRequest("Action consultée", ActionStatus.CREATED);
+    @ParameterizedTest
+    @CsvSource({
+        "adminFr, admin123",
+        "adminEn, admin123",
+        "userFr, user123",
+        "userEn, user123"
+    })
+    void updateAction_shouldReturn404_whenNotFound_forAllAuthorizedUsers(String userName, String pwd) throws Exception {
+        ActionRequest update = new ActionRequest("Modified", ActionStatus.IN_PROGRESS);
 
-    //     String response = mockMvc.perform(post("/api/v1/actions")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(request)))
-    //         .andReturn().getResponse().getContentAsString();
-
-    //     long id = objectMapper.readTree(response).get("id").asLong();
-
-    //     mockMvc.perform(get("/api/v1/actions/" + id))
-    //         .andExpect(status().isOk())
-    //         .andExpect(jsonPath("$.actionName").value("Action consultée"))
-    //         .andExpect(jsonPath("$._links").exists());
-    // }
-
-    // @Test
-    // void getActionById_shouldReturn404_whenNotFound() throws Exception {
-    //     mockMvc.perform(get("/api/v1/actions/999999"))
-    //         .andExpect(status().isNotFound());
-    // }
+        mockMvc.perform(put("/api/vES.1/actions/999999")
+                .with(httpBasic(userName, pwd))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(update)))
+            .andExpect(status().isNotFound());
+    }
 
     // @Test
-    // void getAllActions_shouldReturnList() throws Exception {
-    //     mockMvc.perform(get("/api/v1/actions"))
-    //         .andExpect(status().isOk())
-    //         .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(0))));
-    // }
+    @ParameterizedTest
+    @CsvSource({
+        "adminFr, admin123",
+        "adminEn, admin123",
+        "userFr, user123",
+        "userEn, user123"
+    })
+    void updateAction_shouldReturn400_whenInvalid_forAllAuthorizedUsers(String userName, String pwd) throws Exception {
+        ActionRequest update = new ActionRequest("", null);
+
+        mockMvc.perform(put("/api/vES.1/actions/1")
+                .with(httpBasic(userName, pwd))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(update)))
+            .andExpect(status().isBadRequest());
+    }
 
     // @Test
-    // void deleteAction_shouldReturn204_whenExists() throws Exception {
-    //     ActionRequest request = new ActionRequest("À supprimer", ActionStatus.CREATED);
+    @ParameterizedTest
+    @CsvSource({
+        "adminFr, admin123",
+        "adminEn, admin123",
+        "userFr, user123",
+        "userEn, user123"
+    })
+    void getActionById_shouldReturn200_whenExists_forAllAuthorizedUsers(String userName, String pwd) throws Exception {
+        ActionRequest request = new ActionRequest("Action consultée - "+userName, ActionStatus.CREATED);
 
-    //     String response = mockMvc.perform(post("/api/v1/actions")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(request)))
-    //         .andReturn().getResponse().getContentAsString();
+        String response = mockMvc.perform(post("/api/vES.1/actions")
+                .with(httpBasic(userName, pwd))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andReturn().getResponse().getContentAsString();
 
-    //     long id = objectMapper.readTree(response).get("id").asLong();
+        long id = objectMapper.readTree(response).get("id").asLong();
 
-    //     mockMvc.perform(delete("/api/v1/actions/" + id))
-    //         .andExpect(status().isNoContent());
-    // }
+        mockMvc.perform(get("/api/vES.1/actions/" + id)
+                    .with(httpBasic(userName, pwd)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.actionName").value("Action consultée - "+userName))
+            .andExpect(jsonPath("$.actionStatus").value(ActionStatus.CREATED.name()))
+            .andExpect(jsonPath("$._links").exists());
+    }
 
     // @Test
-    // void deleteAction_shouldReturn404_whenNotExists() throws Exception {
-    //     mockMvc.perform(delete("/api/v1/actions/999999"))
-    //         .andExpect(status().isNotFound());
-    // }
+    @ParameterizedTest
+    @CsvSource({
+        "adminFr, admin123",
+        "adminEn, admin123",
+        "userFr, user123",
+        "userEn, user123"
+    })
+    void getActionById_shouldReturn404_whenNotFound_forAllAuthorizedUsers(String userName, String pwd) throws Exception {
+        mockMvc.perform(get("/api/vES.1/actions/999999")
+                    .with(httpBasic(userName, pwd)))
+            .andExpect(status().isNotFound());
+    }
 
     // @Test
-    // void getAllStatuses_shouldReturnEnumValues() throws Exception {
-    //     mockMvc.perform(get("/api/v1/actions/statuses"))
-    //         .andExpect(status().isOk())
-    //         .andExpect(jsonPath("$", hasItem("CREATED")))
-    //         .andExpect(jsonPath("$", hasItem("COMPLETED")));
-    // }
+    @ParameterizedTest
+    @CsvSource({
+        "adminFr, admin123",
+        "adminEn, admin123",
+        "userFr, user123",
+        "userEn, user123"
+    })
+    void getAllActions_shouldReturnList_forAllAuthorizedUsers(String userName, String pwd) throws Exception {
+        mockMvc.perform(get("/api/vES.1/actions")
+                        .with(httpBasic(userName, pwd)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(0))));
+    }
+
+    // @Test
+    @ParameterizedTest
+    @CsvSource({
+        "adminFr, admin123",
+        "adminEn, admin123",
+        "userFr, user123",
+        "userEn, user123"
+    })
+    void deleteAction_shouldReturn204_whenExists_forAllAuthorizedUsers(String userName, String pwd) throws Exception {
+        ActionRequest request = new ActionRequest("À supprimer - "+userName, ActionStatus.CREATED);
+
+        String response = mockMvc.perform(post("/api/vES.1/actions")
+                .with(httpBasic(userName, pwd))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andReturn().getResponse().getContentAsString();
+
+        long id = objectMapper.readTree(response).get("id").asLong();
+
+        mockMvc.perform(delete("/api/vES.1/actions/" + id)
+                    .with(httpBasic(userName, pwd)))
+            .andExpect(status().isNoContent());
+    }
+
+    // @Test
+    @ParameterizedTest
+    @CsvSource({
+        "adminFr, admin123",
+        "adminEn, admin123",
+        "userFr, user123",
+        "userEn, user123"
+    })
+    void deleteAction_shouldReturn404_whenNotExists_forAllAuthorizedUsers(String userName, String pwd) throws Exception {
+        mockMvc.perform(delete("/api/vES.1/actions/999999")
+                            .with(httpBasic(userName, pwd)))
+            .andExpect(status().isNotFound());
+    }
+
+    // @Test
+    @ParameterizedTest
+    @CsvSource({
+        "adminFr, admin123",
+        "adminEn, admin123",
+        "userFr, user123",
+        "userEn, user123"
+    })
+    void getAllStatuses_shouldReturnEnumValues_forAllAuthorizedUsers(String userName, String pwd) throws Exception {
+        mockMvc.perform(get("/api/vES.1/actions/statuses")
+                            .with(httpBasic(userName, pwd)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasItem("CREATED")))
+            .andExpect(jsonPath("$", hasItem("COMPLETED")));
+    }
 }

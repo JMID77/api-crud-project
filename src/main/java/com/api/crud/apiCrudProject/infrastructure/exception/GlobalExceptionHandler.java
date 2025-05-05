@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
         List<String> errors = new ArrayList<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.add(translationService.translate("{exception.argument.notvalid.generic}", error.getField(), error.getDefaultMessage()));
+        errors.add(translationService.translate("{exception.argument.notvalid.generic}", error.getField(), error.getDefaultMessage()));
         }
 
         ApiError apiError = new ApiError(
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
                     errors
                 );
                 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                             .body(apiError);
     }
 
@@ -125,7 +125,7 @@ public class GlobalExceptionHandler {
     // Gérer l'erreur de ressource (record entité : user, action, userSystem) non trouvée
     @ExceptionHandler(RessourceNotFoundException.class)
     public ResponseEntity<ApiError> handleNotFound(RessourceNotFoundException ex, WebRequest request) {
-        List<String> errors = List.of(ErrorHttpCodes.NOT_FOUND.resolveMessage(translationService), ex.getMessage());
+        List<String> errors = List.of(ErrorHttpCodes.NOT_FOUND.resolveMessage(translationService), this.translationService.translate(ex.getMessage()));
         String localizedMessage = translationService.translate(
                                                         ex.getMessageKey(),
                                                         ex.getMessageArguments()

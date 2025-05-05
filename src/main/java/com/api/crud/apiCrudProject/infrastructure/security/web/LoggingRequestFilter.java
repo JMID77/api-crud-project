@@ -43,19 +43,12 @@ public class LoggingRequestFilter extends OncePerRequestFilter {
     }
 
     private void loggingUserSysConnected(HttpServletRequest request) {
-        // Gestion du log
-        System.out.println(">>> LoggingRequestFilter déclenché");
-
         String method = request.getMethod();
         String path = request.getRequestURI();
         String authHeader = request.getHeader("Authorization");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            System.out.println(">>> Aucun utilisateur authentifié dans le SecurityContext.");
-        } else {
-            System.out.println(">>> Utilisateur authentifié: " + auth.getName());
-        }
+        
         String username = (auth != null && auth.isAuthenticated()) ? auth.getName() : "anonymous";
 
         System.out.printf("🔍 [%s] %s | User: %s | AuthHeader: %s%n", method, path, username, authHeader);

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,13 @@ public class ActionController {
     public ActionController(ActionsService actionService, ActionModelAssembler actionModelAssembler) {
         this.actionService = actionService;
         this.actionModelAssembler = actionModelAssembler;
+    }
+
+    @GetMapping("/secured")
+    public ResponseEntity<String> securedEndpoint(Authentication auth) {
+        System.out.println("User = " + auth.getName());
+        System.out.println("Authorities = " + auth.getAuthorities());
+        return ResponseEntity.ok("OK");
     }
 
     @PostMapping

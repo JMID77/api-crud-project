@@ -28,11 +28,6 @@ public class DatabaseInitializer {
             userSysRepository.persist(new UserSystem(null, "adminFr", encoder.encode("admin123"), Language.FRENCH, RoleType.ROLE_ADMIN));
             userSysRepository.persist(new UserSystem(null, "userEn", encoder.encode("user123"), Language.ENGLISH, RoleType.ROLE_USER));
             userSysRepository.persist(new UserSystem(null, "userFr", encoder.encode("user123"), Language.FRENCH, RoleType.ROLE_USER));
-
-            // Optional<UserSystem> userSys = userSysRepository.searchByUsername("adminEn");
-            // userSys.ifPresent(user -> {
-            //     System.out.println("UserSys >> "+user.getUsername()+"/"+user.getRole().name()+" (PWD="+user.getPassword()+")");
-            // });
         }
     }
 }
