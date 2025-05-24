@@ -28,15 +28,6 @@ class JpaActionRepositoryImplTest {
     private JpaActionRepository actionRepo;
 
 
-    // @TestConfiguration
-    // static class TestConfigRepository {
-    //     @Bean
-    //     @Primary
-    //     public JpaActionRepository actionRepository(JpaActionRepository jpaActionRepository) {
-    //         return jpaActionRepository;
-    //     }
-    // }
-
     @Test
     void userSysRepository_shouldBeInstanceOfJpaActionRepositoryImpl() {
         assertNotNull(actionRepository);

@@ -1,7 +1,5 @@
 package com.api.crud.apiCrudProject.domain.entity;
 
-
-
 import com.api.crud.apiCrudProject.domain.entity.enumeration.ActionStatus;
 
 import jakarta.persistence.*;

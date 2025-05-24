@@ -64,7 +64,7 @@ public class UserSystemController {
 
     }
 
-    @PutMapping("/admins/users")
+    @PutMapping("/admins/users/{id}")
     public ResponseEntity<UserSystemResponse> updateUserSystem(@PathVariable Long id, @RequestBody @Valid UserSystemRequest request) {
         UserSystemResponse updatedUserSys = this.userSystemService.updateUserSystem(id, request);
 

@@ -1,78 +1,143 @@
 package com.api.crud.apiCrudProject.infrastructure.persistence;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
+import com.api.crud.apiCrudProject.domain.entity.UserSystem;
 import com.api.crud.apiCrudProject.domain.entity.enumeration.Language;
 import com.api.crud.apiCrudProject.domain.entity.enumeration.RoleType;
-import com.api.crud.apiCrudProject.domain.entity.UserSystem;
-import com.api.crud.apiCrudProject.domain.repository.UserSystemRepository;
 
-@SpringBootTest
 public class JpaUserSystemRepositoryImplTest {
 
-    @Autowired
-    private UserSystemRepository userSysRepository;
-    @Autowired
-    private JpaUserSystemRepository userSysRepo;
+    private JpaUserSystemRepository jpaRepo;
+    private JpaUserSystemRepositoryImpl repository;
 
-    @Test
-    void userSysRepository_shouldBeInstanceOfJpaUserSystemRepositoryImpl() {
-        assertNotNull(userSysRepository);
-        assertTrue(userSysRepository instanceof JpaUserSystemRepositoryImpl,
-                        "userSysRepository should be an instance of JpaUserSystemRepositoryImpl");
-        // assertEquals(JpaUserSystemRepositoryImpl.class, userSysRepository.getClass(), 
-        //     "userSysRepository should be an instance of JpaUserSystemRepositoryImpl");
-
-        assertNotNull(userSysRepo);
-        assertInstanceOf(JpaUserSystemRepository.class, userSysRepo,
-                        "userSysRepo should be an instance of JpaUserSystemRepository");
+    @BeforeEach
+    void setUp() {
+        jpaRepo = mock(JpaUserSystemRepository.class);
+        repository = new JpaUserSystemRepositoryImpl(jpaRepo);
     }
 
     @Test
-    void save_shouldPersistUserSystem() {
-        UserSystem userSys = UserSystem.builder()
-                .username("USER_ADMIN")
-                .role(RoleType.ROLE_ADMIN)
-                .language(Language.FRENCH)
-                .password("password")
-                .build();
-        
-        UserSystem saved = userSysRepository.persist(userSys);
+    void persist_shouldCallSaveAndReturnEntity() {
+        UserSystem user = new UserSystem(null, "john", "secret", Language.ENGLISH, RoleType.ROLE_USER);
+        UserSystem savedUser = new UserSystem(1L, "john", "secret", Language.ENGLISH, RoleType.ROLE_USER);
 
-        assertNotNull(saved.getId(), "ID should be generated");
-        assertEquals("USER_ADMIN", saved.getUsername(), "UserName not match");
-        assertEquals("password", saved.getPassword(), "Password not match");
-        assertEquals(Language.FRENCH.name(), saved.getLanguage().name(), "Language not match");
-        assertEquals(RoleType.ROLE_ADMIN.name(), saved.getRole().name(), "RoleType not match");
+        when(jpaRepo.save(user)).thenReturn(savedUser);
+
+        UserSystem result = repository.persist(user);
+
+        assertEquals(savedUser, result);
+        verify(jpaRepo).save(user);
     }
 
+    @Test
+    void searchById_shouldReturnUserSystem_whenExists() {
+        Long id = 1L;
+        UserSystem user = new UserSystem(id, "john", "secret", Language.ENGLISH, RoleType.ROLE_USER);
 
-    // @Test
-    // void findAll_shouldReturnAllUserSystem() {
-    //     UserSystem u1 = UserSystem.builder().username("U1").role(RoleType.ADMIN).password("P1").build();
-    //     UserSystem u2 = UserSystem.builder().username("U2").role(RoleType.USER).password("P2").build();
+        when(jpaRepo.findById(id)).thenReturn(Optional.of(user));
 
-    //     JpaUserSystemRepository userSysRepoTemp = (JpaUserSystemRepository) this.userSysRepo;
+        Optional<UserSystem> result = repository.searchById(id);
 
-    //     userSysRepoTemp.save(u1);
-    //     userSysRepoTemp.save(u2);
+        assertTrue(result.isPresent());
+        assertEquals(user, result.get());
+        verify(jpaRepo).findById(id);
+    }
 
-    //     List<UserSystem> all = userSysRepoTemp.findAll();
-    //     // userSysRepo.save(u1);
-    //     // userSysRepo.save(u2);
+    @Test
+    void searchById_shouldReturnEmpty_whenNotFound() {
+        Long id = 2L;
 
-    //     // List<UserSystem> all = userSysRepo.findAll();
-    //     assertEquals(2, all.size());
-    //     assertEquals("U1", all.get(0).getUsername(), "UserName not match");
-    //     assertEquals("P1", all.get(0).getPassword(), "Password not match");
-    //     assertEquals(RoleType.ADMIN.name(), all.get(0).getRole().name(), "RoleType not match");
-    // }
+        when(jpaRepo.findById(id)).thenReturn(Optional.empty());
+
+        Optional<UserSystem> result = repository.searchById(id);
+
+        assertFalse(result.isPresent());
+        verify(jpaRepo).findById(id);
+    }
+
+    @Test
+    void searchAll_shouldReturnListOfUsers() {
+        List<UserSystem> users = List.of(
+            new UserSystem(1L, "john", "pass", Language.FRENCH, RoleType.ROLE_USER),
+            new UserSystem(2L, "jane", "pass", Language.ENGLISH, RoleType.ROLE_ADMIN)
+        );
+
+        when(jpaRepo.findAll()).thenReturn(users);
+
+        List<UserSystem> result = repository.searchAll();
+
+        assertEquals(users, result);
+        verify(jpaRepo).findAll();
+    }
+
+    @Test
+    void removeById_shouldCallDeleteById() {
+        Long id = 1L;
+
+        repository.removeById(id);
+
+        verify(jpaRepo).deleteById(id);
+    }
+
+    @Test
+    void checkById_shouldReturnTrue_whenExists() {
+        Long id = 1L;
+
+        when(jpaRepo.existsById(id)).thenReturn(true);
+
+        boolean result = repository.checkById(id);
+
+        assertTrue(result);
+        verify(jpaRepo).existsById(id);
+    }
+
+    @Test
+    void checkById_shouldReturnFalse_whenNotExists() {
+        Long id = 99L;
+
+        when(jpaRepo.existsById(id)).thenReturn(false);
+
+        boolean result = repository.checkById(id);
+
+        assertFalse(result);
+        verify(jpaRepo).existsById(id);
+    }
+
+    @Test
+    void searchByUsername_shouldReturnUser_whenExists() {
+        String username = "john";
+        UserSystem user = new UserSystem(1L, "john", "secret", Language.ENGLISH, RoleType.ROLE_USER);
+
+        when(jpaRepo.findByUsername(username)).thenReturn(Optional.of(user));
+
+        Optional<UserSystem> result = repository.searchByUsername(username);
+
+        assertTrue(result.isPresent());
+        assertEquals(user, result.get());
+        verify(jpaRepo).findByUsername(username);
+    }
+
+    @Test
+    void searchByUsername_shouldReturnEmpty_whenNotFound() {
+        String username = "unknown";
+
+        when(jpaRepo.findByUsername(username)).thenReturn(Optional.empty());
+
+        Optional<UserSystem> result = repository.searchByUsername(username);
+
+        assertFalse(result.isPresent());
+        verify(jpaRepo).findByUsername(username);
+    }
 }
